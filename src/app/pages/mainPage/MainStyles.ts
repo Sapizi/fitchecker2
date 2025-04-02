@@ -48,3 +48,23 @@ export const DateTimeText = styled.p`
     color: black;
     margin: 5px 0;
 `;
+
+export const ButtonsBlock= styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+`
+export const LinkButton = styled(Link)`
+    display: block; 
+    text-align: center;
+    margin-left: 33px;
+    width: 384px; 
+    height: 165px;
+    background-color: #e97c00;
+    align-content: center;
+    border-radius: 10px;
+    color: white;
+    font-size: 36px;
+    text-decoration: none;
+    margin-top: 26px;
+`

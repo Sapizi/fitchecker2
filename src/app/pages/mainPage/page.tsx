@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { PostgrestError } from '@supabase/supabase-js';
 import Header from "@/app/components/header/Header";
-import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeBlock, DateTimeText } from "./MainStyles";
+import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeBlock, DateTimeText, ButtonsBlock, LinkButton } from "./MainStyles";
 import { Wrapper } from "@/app/GlobalStyles";
 import { supabase } from '../../lib/supbase';
 
@@ -10,8 +10,6 @@ const Main = () => {
     const [clientCount, setClientCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
-
-    // Получение количества клиентов
     useEffect(() => {
         const fetchClientCount = async () => {
             try {
@@ -59,7 +57,7 @@ const Main = () => {
                 <MainContent>
                     <MainBlock>
                         {loading ? (
-                            <BigText>Загрузка...</BigText>
+                            <BigText></BigText>
                         ) : (
                             <BigText>{clientCount ?? 0}</BigText>
                         )}
@@ -71,7 +69,11 @@ const Main = () => {
                         <DateTimeText>{currentDateTime.date}</DateTimeText>
                         <DateTimeText>{currentDateTime.time}</DateTimeText>
                     </DateTimeBlock>
-                    
+                    <ButtonsBlock>
+                        <LinkButton href='/'>Добавить занятие</LinkButton>
+                        <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>
+                        <LinkButton href='/'>Список занятий</LinkButton>
+                    </ButtonsBlock>
                 </MainContent>
             </Wrapper>
         </>
