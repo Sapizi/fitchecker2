@@ -70,9 +70,9 @@ const Main = () => {
                         <DateTimeText>{currentDateTime.time}</DateTimeText>
                     </DateTimeBlock>
                     <ButtonsBlock>
-                        <LinkButton href='/'>Добавить занятие</LinkButton>
+                        <LinkButton href='/pages/addWorkout'>Добавить занятие</LinkButton>
                         <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>
-                        <LinkButton href='/'>Список занятий</LinkButton>
+                        <LinkButton href='/pages/mainPage'>Список занятий</LinkButton>
                     </ButtonsBlock>
                 </MainContent>
             </Wrapper>
