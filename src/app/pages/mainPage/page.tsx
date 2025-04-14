@@ -4,7 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import Header from "@/app/components/header/Header";
 import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeBlock, DateTimeText, ButtonsBlock, LinkButton } from "./MainStyles";
 import { Wrapper } from "@/app/GlobalStyles";
-import { supabase } from '../../lib/supbase';
+import { supabase } from '../../lib/supabaseClient';
 
 const Main = () => {
     const [clientCount, setClientCount] = useState<number | null>(null);
@@ -72,7 +72,7 @@ const Main = () => {
                     <ButtonsBlock>
                         <LinkButton href='/pages/addWorkout'>Добавить занятие</LinkButton>
                         <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>
-                        <LinkButton href='/pages/mainPage'>Список занятий</LinkButton>
+                        <LinkButton href='/pages/workoutList'>Список занятий</LinkButton>
                     </ButtonsBlock>
                 </MainContent>
             </Wrapper>

@@ -1,29 +1,44 @@
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { supabase } from '../../lib/supbase';
+import { supabase } from '../../lib/supabaseClient';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 const AllMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  min-height: 100vh; 
+  padding: 20px; 
+  box-sizing: border-box;
 `;
+
 const Forma = styled.form`
-  width: 20%;
+  width: 90%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 40px;
+  padding: 30px; 
   background-color: #f7f7f7;
   border-radius: 8px;
   border: 1px solid black;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 20px; 
+    gap: 15px; 
+  }
 `;
+
 const Title = styled.h2`
   font-size: 24px;
   text-align: center;
   color: #333;
   margin-bottom: 10px;
+
+  @media (max-width: 600px) {
+    font-size: 20px;
+  }
 `;
 
 const MainInput = styled.input`
@@ -32,9 +47,17 @@ const MainInput = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
   outline: none;
+  width: 100%; 
+  box-sizing: border-box;
+
   &:focus {
     border-color: #e97c00;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+
+  @media (max-width: 600px) {
+    padding: 10px; 
+    font-size: 14px; 
   }
 `;
 
@@ -46,8 +69,16 @@ const MainButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%; 
+  box-sizing: border-box;
+
   &:hover {
     background-color: #ca6c00;
+  }
+
+  @media (max-width: 600px) {
+    padding: 10px;
+    font-size: 14px;
   }
 `;
 
@@ -55,12 +86,18 @@ const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   text-align: center;
+  margin: 0;
+
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 
 interface LoginFormData {
   username: string;
   password: string;
 }
+
 export default function AdminLogin() {
   const {
     register: registerLogin,
@@ -71,6 +108,7 @@ export default function AdminLogin() {
   });
   const [loginError, setLoginError] = React.useState<string>('');
   const router = useRouter();
+
   const onLoginSubmit = async (data: LoginFormData) => {
     try {
       const { username, password } = data;
@@ -99,6 +137,7 @@ export default function AdminLogin() {
       console.error(err);
     }
   };
+
   return (
     <AllMain>
       <Forma onSubmit={handleSubmitLogin(onLoginSubmit)}>
