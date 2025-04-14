@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { supabase } from '../../lib/supabaseClient';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 const AllMain = styled.div`
   display: flex;
@@ -109,35 +109,61 @@ export default function AdminLogin() {
   const [loginError, setLoginError] = React.useState<string>('');
   const router = useRouter();
 
+  // Проверяем авторизацию при загрузке компонента
+  useEffect(() => {
+    const checkAuth = () => {
+      const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+      const isClientLoggedIn = localStorage.getItem('isClientLoggedIn') === 'true';
+      
+      if (isAdminLoggedIn) {
+        router.push('/pages/mainPage');
+      } else if (isClientLoggedIn) {
+        router.push('/pages/userPage');
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
   const onLoginSubmit = async (data: LoginFormData) => {
     try {
       const { username, password } = data;
-
-      const { data: admin, error } = await supabase
+  
+      // Проверка для администратора
+      const { data: admin, error: adminError } = await supabase
         .from('admins')
         .select('username, password')
         .eq('username', username)
         .single();
-
-      if (error || !admin) {
-        setLoginError('Неверный логин или пароль');
+  
+      if (admin && admin.password === password) {
+        setLoginError('');
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        router.push('/pages/mainPage');
         return;
       }
 
-      if (admin.password !== password) {
-        setLoginError('Неверный логин или пароль');
+      // Проверка для клиента
+      const { data: client, error: clientError } = await supabase
+        .from('clients')
+        .select('name, password')
+        .eq('name', username)
+        .single();
+  
+      if (client && client.password === password) {
+        setLoginError('');
+        localStorage.setItem('isClientLoggedIn', 'true');
+        router.push('/pages/userPage');
         return;
       }
 
-      setLoginError('');
-      localStorage.setItem('isAdminLoggedIn', 'true');
-      router.push('/pages/mainPage');
+      setLoginError('Неверный логин или пароль');
     } catch (err) {
       setLoginError('Произошла ошибка при входе');
       console.error(err);
     }
   };
-
+  
   return (
     <AllMain>
       <Forma onSubmit={handleSubmitLogin(onLoginSubmit)}>
