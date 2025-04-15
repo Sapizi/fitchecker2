@@ -6,11 +6,15 @@ import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeB
 import { Wrapper } from "@/app/GlobalStyles";
 import { supabase } from '../../lib/supabaseClient';
 import { withAuth } from '@/app/withAuth';
+import Link from 'next/link';
 
 const Main = () => {
     const [clientCount, setClientCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
+    const [todayWorkouts, setTodayWorkouts] = useState<any[]>([]);
+
+    // Загрузка количества клиентов
     useEffect(() => {
         const fetchClientCount = async () => {
             try {
@@ -30,6 +34,7 @@ const Main = () => {
         };
         fetchClientCount();
     }, []);
+
     useEffect(() => {
         const updateDateTime = () => {
             const now = new Date();
@@ -50,6 +55,32 @@ const Main = () => {
         return () => clearInterval(interval); 
     }, []);
 
+    // Загрузка занятий на сегодня
+    useEffect(() => {
+        const fetchTodayWorkouts = async () => {
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+
+            const { data: workouts, error } = await supabase
+                .from('workouts')
+                .select('id, workout_name, workout_datetime, trainers(trainer_name)')
+                .gte('workout_datetime', startOfDay.toISOString())
+                .lte('workout_datetime', endOfDay.toISOString())
+                .order('workout_datetime', { ascending: true })
+                .limit(3);
+
+            if (error) {
+                console.error('Ошибка при загрузке занятий:', error.message);
+            } else {
+                setTodayWorkouts(workouts);
+            }
+        };
+
+        fetchTodayWorkouts();
+    }, []);
+
     return (
         <>
             <Header />
@@ -65,11 +96,29 @@ const Main = () => {
                         <CardText>Количество клиентов</CardText>
                         <CardButton href="/pages/addClient">Добавить</CardButton>
                     </MainBlock>
+                        
                     <DateTimeBlock>
-                        <DateTimeText>Сегодняшняя дата</DateTimeText>
+                    <DateTimeText>Сегодняшняя дата</DateTimeText>
                         <DateTimeText>{currentDateTime.date}</DateTimeText>
                         <DateTimeText>{currentDateTime.time}</DateTimeText>
+                        <DateTimeText>Занятия на сегодня:</DateTimeText>
+                        {todayWorkouts.length === 0 ? (
+                            <DateTimeText>Занятий нет</DateTimeText>
+                        ) : (
+                            todayWorkouts.map((workout) => (
+                                <DateTimeText key={workout.id}>
+                                    {new Date(workout.workout_datetime).toLocaleTimeString('ru-RU', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })} — {workout.workout_name} ({workout.trainers?.name || 'Тренер не указан'})
+                                </DateTimeText>
+                            ))
+                        )}
+
+                        
+                        <Link href={'/pages/addAdmin'}>Добавить администратора</Link>
                     </DateTimeBlock>
+
                     <ButtonsBlock>
                         <LinkButton href='/pages/addWorkout'>Добавить занятие</LinkButton>
                         <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>

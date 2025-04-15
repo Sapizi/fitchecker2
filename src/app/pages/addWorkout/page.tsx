@@ -78,12 +78,22 @@ const AddWorkout = () => {
 
   const handleClientCheckboxChange = (clientId: number) => {
     const currentClients = formValues.clients || [];
-    const newClients = currentClients.includes(clientId)
-      ? currentClients.filter(id => id !== clientId)
-      : [...currentClients, clientId];
-    
-    setValue("clients", newClients);
+  
+    if (currentClients.includes(clientId)) {
+      // Удалить клиента
+      const newClients = currentClients.filter(id => id !== clientId);
+      setValue("clients", newClients);
+    } else {
+      // Добавить клиента, если не превышен лимит
+      if (currentClients.length >= 30) {
+        alert("Можно выбрать не более 30 клиентов.");
+        return;
+      }
+      const newClients = [...currentClients, clientId];
+      setValue("clients", newClients);
+    }
   };
+  
 
   const filteredClients = clients.filter(client =>
     client.name.toLowerCase().includes((formValues.searchQuery || "").toLowerCase())
@@ -175,7 +185,7 @@ const AddWorkout = () => {
             />
 
             <ClientList>
-              <ClientListTitle>Выберите клиентов:</ClientListTitle>
+              <ClientListTitle>Выберите клиентов: (максимум 30)</ClientListTitle>
               {filteredClients.length > 0 ? (
                 filteredClients.map((client) => (
                   <ClientLabel key={client.id}>

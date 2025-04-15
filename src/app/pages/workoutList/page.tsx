@@ -5,7 +5,6 @@ import { Title } from '../mainPage/MainStyles';
 import { Wrapper } from '@/app/GlobalStyles';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/app/lib/supabaseClient';
-import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   ButtonContainer,
