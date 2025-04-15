@@ -35,12 +35,10 @@ const Title = styled.h2`
   text-align: center;
   color: #333;
   margin-bottom: 10px;
-
   @media (max-width: 600px) {
     font-size: 20px;
   }
 `;
-
 const MainInput = styled.input`
   padding: 12px;
   font-size: 16px;
@@ -49,18 +47,15 @@ const MainInput = styled.input`
   outline: none;
   width: 100%; 
   box-sizing: border-box;
-
   &:focus {
     border-color: #e97c00;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
   }
-
   @media (max-width: 600px) {
     padding: 10px; 
     font-size: 14px; 
   }
 `;
-
 const MainButton = styled.button`
   padding: 12px;
   font-size: 16px;
@@ -71,17 +66,14 @@ const MainButton = styled.button`
   cursor: pointer;
   width: 100%; 
   box-sizing: border-box;
-
   &:hover {
     background-color: #ca6c00;
   }
-
   @media (max-width: 600px) {
     padding: 10px;
     font-size: 14px;
   }
 `;
-
 const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
@@ -92,12 +84,10 @@ const ErrorMessage = styled.p`
     font-size: 12px;
   }
 `;
-
 interface LoginFormData {
   username: string;
   password: string;
 }
-
 export default function AdminLogin() {
   const {
     register: registerLogin,
@@ -108,13 +98,10 @@ export default function AdminLogin() {
   });
   const [loginError, setLoginError] = React.useState<string>('');
   const router = useRouter();
-
-  // Проверяем авторизацию при загрузке компонента
   useEffect(() => {
     const checkAuth = () => {
       const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
       const isClientLoggedIn = localStorage.getItem('isClientLoggedIn') === 'true';
-      
       if (isAdminLoggedIn) {
         router.push('/pages/mainPage');
       } else if (isClientLoggedIn) {
@@ -124,12 +111,10 @@ export default function AdminLogin() {
 
     checkAuth();
   }, [router]);
-
   const onLoginSubmit = async (data: LoginFormData) => {
     try {
       const { username, password } = data;
-  
-      // Проверка для администратора
+
       const { data: admin, error: adminError } = await supabase
         .from('admins')
         .select('username, password')
@@ -143,7 +128,6 @@ export default function AdminLogin() {
         return;
       }
 
-      // Проверка для клиента
       const { data: client, error: clientError } = await supabase
         .from('clients')
         .select('name, password')
@@ -153,6 +137,7 @@ export default function AdminLogin() {
       if (client && client.password === password) {
         setLoginError('');
         localStorage.setItem('isClientLoggedIn', 'true');
+        localStorage.setItem('clientName', client.name); 
         router.push('/pages/userPage');
         return;
       }
@@ -163,7 +148,6 @@ export default function AdminLogin() {
       console.error(err);
     }
   };
-  
   return (
     <AllMain>
       <Forma onSubmit={handleSubmitLogin(onLoginSubmit)}>
