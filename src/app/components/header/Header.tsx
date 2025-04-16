@@ -1,5 +1,4 @@
-'use client'; // Важно добавить эту директиву
-
+'use client'; 
 import { HeaderContainer, HeaderLogo, LogoutButton } from "./HeaderStyles";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

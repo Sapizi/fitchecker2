@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// Контейнер для тренировок
 export const WorkoutsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,7 +7,7 @@ export const WorkoutsContainer = styled.div`
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 15px; /* Добавлены отступы по бокам */
+  padding: 0 15px; 
   box-sizing: border-box;
 
   @media (max-width: 768px) {
@@ -16,7 +15,6 @@ export const WorkoutsContainer = styled.div`
   }
 `;
 
-// Поле фильтра по дате
 export const DateFilterInput = styled.input`
   width: 200px;
   height: 40px;
@@ -29,7 +27,7 @@ export const DateFilterInput = styled.input`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    width: 100%; /* Полная ширина */
+    width: 100%; 
     max-width: 300px;
     height: 36px;
     font-size: 14px;
@@ -57,7 +55,6 @@ export const WorkoutCard = styled.div`
   }
 `;
 
-// Заголовок тренировки
 export const WorkoutTitle = styled.h3`
   margin: 0 0 10px 0;
   font-size: 20px;
@@ -73,7 +70,7 @@ export const WorkoutTitle = styled.h3`
   }
 `;
 
-// Информация о тренировке
+
 export const WorkoutInfo = styled.p`
   margin: 5px 0;
   font-size: 18px;
@@ -89,7 +86,7 @@ export const WorkoutInfo = styled.p`
   }
 `;
 
-// Список клиентов
+
 export const ClientList = styled.ul`
   margin: 5px 0 0 0;
   padding-left: 20px;
@@ -113,21 +110,19 @@ export const ClientItem = styled.li`
   }
 `;
 
-// Контейнер для кнопок
 export const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 10px;
 
   @media (max-width: 768px) {
-    flex-direction: column; /* Вертикальное расположение */
+    flex-direction: column; 
     align-items: stretch;
     gap: 8px;
     margin-top: 8px;
   }
 `;
 
-// Кнопка редактирования
 export const EditButton = styled.button`
   padding: 5px 10px;
   background-color: #007bff;
@@ -141,7 +136,7 @@ export const EditButton = styled.button`
   @media (max-width: 768px) {
     padding: 6px 8px;
     font-size: 13px;
-    width: 100%; /* Полная ширина */
+    width: 100%; 
   }
 
   @media (max-width: 480px) {
@@ -149,7 +144,6 @@ export const EditButton = styled.button`
   }
 `;
 
-// Кнопка удаления
 export const DeleteButton = styled.button`
   padding: 5px 10px;
   background-color: #dc3545;
@@ -171,7 +165,6 @@ export const DeleteButton = styled.button`
   }
 `;
 
-// Модальное окно
 export const Modal = styled.div`
   position: fixed;
   top: 0;
@@ -182,17 +175,16 @@ export const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px; /* Отступы для маленьких экранов */
+  padding: 10px;
   box-sizing: border-box;
 `;
 
-// Содержимое модального окна
 export const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   width: 400px;
-  max-width: 90%; /* Адаптивная ширина */
+  max-width: 90%; 
   max-height: 80vh;
   overflow-y: auto;
   box-sizing: border-box;
@@ -207,7 +199,6 @@ export const ModalContent = styled.div`
   }
 `;
 
-// Заголовок модального окна
 export const ModalTitle = styled.h2`
   margin: 0 0 20px 0;
   font-size: 20px;
@@ -222,7 +213,7 @@ export const ModalTitle = styled.h2`
   }
 `;
 
-// Поле ввода в модальном окне
+
 export const ModalInput = styled.input`
   width: 100%;
   height: 40px;
@@ -246,7 +237,6 @@ export const ModalInput = styled.input`
   }
 `;
 
-// Выпадающий список в модальном окне
 export const ModalSelect = styled.select`
   width: 100%;
   height: 40px;
@@ -255,7 +245,7 @@ export const ModalSelect = styled.select`
   font-size: 16px;
   margin-bottom: 10px;
   box-sizing: border-box;
-  padding-left: 10px; /* Добавлено для согласованности */
+  padding-left: 10px; 
 
   @media (max-width: 768px) {
     height: 36px;
@@ -270,7 +260,6 @@ export const ModalSelect = styled.select`
   }
 `;
 
-// Список клиентов в модальном окне
 export const ClientListModal = styled.div`
   max-height: 200px;
   overflow-y: auto;
@@ -287,12 +276,12 @@ export const ClientListModal = styled.div`
   }
 `;
 
-// Метка клиента
+
 export const ClientLabel = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  font-size: 14px; /* Явный размер шрифта */
+  font-size: 14px;
 
   @media (max-width: 768px) {
     font-size: 13px;
@@ -304,10 +293,9 @@ export const ClientLabel = styled.label`
   }
 `;
 
-// Чекбокс клиента
 export const ClientCheckbox = styled.input`
   margin-right: 10px;
-  width: 18px; /* Явный размер */
+  width: 18px; 
   height: 18px;
 
   @media (max-width: 768px) {
@@ -322,20 +310,19 @@ export const ClientCheckbox = styled.input`
   }
 `;
 
-// Контейнер кнопок в модальном окне
+
 export const ModalButtonContainer = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-end;
 
   @media (max-width: 768px) {
-    flex-direction: column; /* Вертикальное расположение */
+    flex-direction: column;
     align-items: stretch;
     gap: 8px;
   }
 `;
 
-// Кнопка сохранения
 export const SaveButton = styled.button`
   padding: 10px 20px;
   background-color: #e97c00;
@@ -359,7 +346,6 @@ export const SaveButton = styled.button`
   }
 `;
 
-// Кнопка отмены
 export const CancelButton = styled.button`
   padding: 10px 20px;
   background-color: #6c757d;

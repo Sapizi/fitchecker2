@@ -80,11 +80,9 @@ const AddWorkout = () => {
     const currentClients = formValues.clients || [];
   
     if (currentClients.includes(clientId)) {
-      // Удалить клиента
       const newClients = currentClients.filter(id => id !== clientId);
       setValue("clients", newClients);
     } else {
-      // Добавить клиента, если не превышен лимит
       if (currentClients.length >= 30) {
         alert("Можно выбрать не более 30 клиентов.");
         return;

@@ -35,7 +35,6 @@ export default function AdminLogin() {
     try {
       const { username, password } = data;
   
-      // 1. Проверка в таблице admins
       const { data: admin, error: adminError } = await supabase
         .from('admins')
         .select('username, password')
@@ -48,26 +47,6 @@ export default function AdminLogin() {
           setLoginError('');
           localStorage.setItem('isAdminLoggedIn', 'true');
           router.push('/pages/mainPage');
-          return;
-        } else {
-          setLoginError('Неверный пароль');
-          return;
-        }
-      }
-  
-      // 2. Проверка в таблице clients (без bcrypt)
-      const { data: client, error: clientError } = await supabase
-        .from('clients')
-        .select('name, password')
-        .eq('name', username)
-        .single();
-  
-      if (client) {
-        if (client.password === password) {
-          setLoginError('');
-          localStorage.setItem('isClientLoggedIn', 'true');
-          localStorage.setItem('clientName', client.name);
-          router.push('/pages/userPage');
           return;
         } else {
           setLoginError('Неверный пароль');

@@ -1,22 +1,20 @@
 import styled from "styled-components";
 
-// Контейнер для формы
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Полная ширина для мобильных */
+  width: 100%; 
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 0 10px; /* Добавлены отступы по бокам для мобильных */
+    padding: 0 10px; 
   }
 `;
 
-// Форма добавления
 export const AddForm = styled.form`
   width: 500px;
-  max-width: 90%; /* Адаптивная ширина */
+  max-width: 90%; 
   margin: 50px auto;
   padding: 20px;
   border: 2px solid #000;
@@ -29,10 +27,10 @@ export const AddForm = styled.form`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    margin: 20px auto; /* Меньший внешний отступ */
-    padding: 15px; /* Меньший внутренний отступ */
-    margin-top: 3%; /* Уменьшен отступ сверху */
-    gap: 8px; /* Меньший зазор между элементами */
+    margin: 20px auto; 
+    padding: 15px; 
+    margin-top: 3%; 
+    gap: 8px; 
   }
 
   @media (max-width: 480px) {
@@ -40,9 +38,9 @@ export const AddForm = styled.form`
   }
 `;
 
-// Поле ввода
+
 export const AddInput = styled.input`
-  width: 100%; /* Полная ширина */
+  width: 100%; 
   height: 40px;
   padding-left: 10px;
   border: none;
@@ -50,8 +48,8 @@ export const AddInput = styled.input`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    height: 36px; /* Меньшая высота */
-    font-size: 14px; /* Меньший шрифт */
+    height: 36px;
+    font-size: 14px; 
     padding-left: 8px;
   }
 
@@ -61,7 +59,6 @@ export const AddInput = styled.input`
   }
 `;
 
-// Кнопка добавления
 export const AddButton = styled.button`
   font-size: 16px;
   margin-top: 20px;
@@ -71,7 +68,7 @@ export const AddButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%; /* Полная ширина для единообразия */
+  width: 100%; 
   box-sizing: border-box;
 
   @media (max-width: 768px) {
@@ -86,7 +83,6 @@ export const AddButton = styled.button`
   }
 `;
 
-// Выпадающий список тренеров
 export const TrainerSelect = styled.select`
   width: 100%;
   height: 40px;
@@ -110,7 +106,6 @@ export const TrainerSelect = styled.select`
   }
 `;
 
-// Список клиентов
 export const ClientList = styled.div`
   width: 90%;
   max-height: 150px;
@@ -122,8 +117,8 @@ export const ClientList = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    width: 100%; /* Полная ширина */
-    max-height: 120px; /* Меньшая высота для компактности */
+    width: 100%;
+    max-height: 120px; 
     padding: 8px;
     margin-top: 8px;
   }
@@ -134,7 +129,6 @@ export const ClientList = styled.div`
   }
 `;
 
-// Заголовок списка клиентов
 export const ClientListTitle = styled.h4`
   margin: 0 0 10px 0;
   font-size: 16px;
@@ -150,7 +144,6 @@ export const ClientListTitle = styled.h4`
   }
 `;
 
-// Метка клиента
 export const ClientLabel = styled.label`
   display: flex;
   align-items: center;
@@ -158,7 +151,7 @@ export const ClientLabel = styled.label`
 
   @media (max-width: 768px) {
     margin-bottom: 4px;
-    font-size: 14px; /* Уменьшен размер текста */
+    font-size: 14px; 
   }
 
   @media (max-width: 480px) {
@@ -166,10 +159,9 @@ export const ClientLabel = styled.label`
   }
 `;
 
-// Чекбокс клиента
 export const ClientCheckbox = styled.input`
   margin-right: 10px;
-  width: 18px; /* Явный размер для единообразия */
+  width: 18px; 
   height: 18px;
 
   @media (max-width: 768px) {

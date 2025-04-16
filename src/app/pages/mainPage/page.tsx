@@ -13,8 +13,6 @@ const Main = () => {
     const [loading, setLoading] = useState(true);
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
     const [todayWorkouts, setTodayWorkouts] = useState<any[]>([]);
-
-    // Загрузка количества клиентов
     useEffect(() => {
         const fetchClientCount = async () => {
             try {
@@ -55,7 +53,6 @@ const Main = () => {
         return () => clearInterval(interval); 
     }, []);
 
-    // Загрузка занятий на сегодня
     useEffect(() => {
         const fetchTodayWorkouts = async () => {
             const startOfDay = new Date();
