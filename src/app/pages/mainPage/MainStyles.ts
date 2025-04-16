@@ -4,11 +4,16 @@ export const MainContent = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  
+  @media (max-width: 426px){
+    flex-direction: column;
+  }
 `;
 
 export const Title = styled.h1`
   font-size: 46px;
+  @media (max-width: 426px){
+    font-size: 38px;
+  }
 `;
 
 export const MainBlock = styled.div`
@@ -17,19 +22,29 @@ export const MainBlock = styled.div`
   border: 2px solid black;
   border-radius: 10px;
   box-sizing: border-box;
+  @media (max-width: 426px){
+    width: 385px;
+    height: 610px;
+  }
 `;
 
 export const BigText = styled.span`
   font-size: 300px;
   margin-left: 36px;
-  display: block; 
+  display: block;
+  @media (max-width: 426px){
+    margin-left: 0px;
+  } 
 `;
 
 export const CardText = styled.p`
   margin-top: 110px;
   font-size: 28px;
   margin-left: 36px;
-
+  @media (max-width: 426px){
+    margin-left: 10px;
+    font-size: 24px;
+  } 
   
 `;
 
@@ -48,7 +63,11 @@ export const CardButton = styled(Link)`
   text-decoration: none;
   margin-top: 26px;
   box-sizing: border-box;
-
+  @media (max-width: 426px){
+    margin-left: 10px;
+    font-size: 24px;
+    width: 360px;
+  } 
   
 `;
 
@@ -56,7 +75,9 @@ export const DateTimeBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  @media (max-width: 426px){
+    margin-left: 50px;
+  }
   
 `;
 
@@ -78,7 +99,6 @@ export const ButtonsBlock = styled.div`
   flex-direction: column;
   gap: 20px;
 
-
   
 `;
 
@@ -97,5 +117,10 @@ export const LinkButton = styled(Link)`
   margin-top: 26px;
   box-sizing: border-box;
 
-  
+  @media (max-width: 426px){
+    width: 360px;
+    margin-left: 13px;
+    margin-bottom: 20px;
+  }
 `;
+  
