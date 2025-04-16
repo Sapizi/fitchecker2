@@ -1,33 +1,17 @@
 'use client';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { PostgrestError } from '@supabase/supabase-js';
-import { supabase } from '../../lib/supabaseClient';
 import Header from '@/app/components/header/Header';
 import { 
-  ErrorMessage, 
-  FormField, 
-  FormTitle, 
-  FormWrapper, 
-  Input, 
-  Label, 
-  Select, 
-  SubmitButton, 
-  SuccessMessage, 
-  Form, 
-  BackLink
-} from './styles';
+  ErrorMessage, FormField, FormWrapper, Input, Label, Select, SubmitButton, SuccessMessage, Form, BackLink} from './styles';
 import { Title } from '../mainPage/MainStyles';
-import Link from 'next/link';
 import { Wrapper } from '@/app/GlobalStyles';
-
 type FormData = {
   name: string;
   sex: 'male' | 'female';
   age: string;
   subscription: 'monthly' | 'quarterly' | 'yearly';
 };
-
 const Page = () => {
   const {
     register,
@@ -41,13 +25,10 @@ const Page = () => {
       subscription: 'monthly'
     }
   });
-
   const [success, setSuccess] = useState<string | null>(null);
-
   const onSubmit = async (data: FormData) => {
     try {
       const age = parseInt(data.age, 10);
-      
       if (isNaN(age) || age <= 0) {
         setFormError('age', {
           type: 'manual',
@@ -56,17 +37,18 @@ const Page = () => {
         return;
       }
 
-      const { error } = await supabase.from('clients').insert([
-        {
-          name: data.name,
-          sex: data.sex,
-          age: age,
-          subscription: data.subscription,
+      const response = await fetch('/api/clients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      ]);
+        body: JSON.stringify({ ...data, age }),
+      });
 
-      if (error) {
-        throw error;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при добавлении клиента');
       }
 
       setSuccess('Клиент успешно добавлен!');
@@ -74,7 +56,7 @@ const Page = () => {
     } catch (error) {
       setFormError('root', {
         type: 'manual',
-        message: `Ошибка при добавлении клиента: ${(error as PostgrestError).message}`
+        message: `Ошибка при добавлении клиента: ${(error as Error).message}`
       });
     }
   };
@@ -83,7 +65,6 @@ const Page = () => {
     <>
       <Header />
       <Wrapper>
-
         <BackLink href='/pages/mainPage'>Назад</BackLink>
         <Title>Добавить клиента</Title>
         <FormWrapper>

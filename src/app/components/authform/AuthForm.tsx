@@ -1,14 +1,14 @@
+'use client';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { supabase } from '../../lib/supabaseClient';
 import React, { useEffect } from 'react';
-import bcrypt from 'bcryptjs';
 import { useRouter } from 'next/navigation';
 import { AllMain, ErrorMessage, Forma, MainButton, MainInput, Title } from './AuthFormStyles';
+
 interface LoginFormData {
   username: string;
   password: string;
 }
+
 export default function AdminLogin() {
   const {
     register: registerLogin,
@@ -19,6 +19,7 @@ export default function AdminLogin() {
   });
   const [loginError, setLoginError] = React.useState<string>('');
   const router = useRouter();
+
   useEffect(() => {
     const checkAuth = () => {
       const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
@@ -31,36 +32,33 @@ export default function AdminLogin() {
     };
     checkAuth();
   }, [router]);
+
   const onLoginSubmit = async (data: LoginFormData) => {
     try {
-      const { username, password } = data;
-  
-      const { data: admin, error: adminError } = await supabase
-        .from('admins')
-        .select('username, password')
-        .eq('username', username)
-        .single();
-  
-      if (admin) {
-        const isAdminPasswordCorrect = await bcrypt.compare(password, admin.password);
-        if (isAdminPasswordCorrect) {
-          setLoginError('');
-          localStorage.setItem('isAdminLoggedIn', 'true');
-          router.push('/pages/mainPage');
-          return;
-        } else {
-          setLoginError('Неверный пароль');
-          return;
-        }
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setLoginError(result.error || 'Произошла ошибка при входе');
+        return;
       }
-  
-      setLoginError('Пользователь не найден');
+
+      setLoginError('');
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      router.push('/pages/mainPage');
     } catch (err) {
       setLoginError('Произошла ошибка при входе');
       console.error(err);
     }
   };
-  
+
   return (
     <AllMain>
       <Forma onSubmit={handleSubmitLogin(onLoginSubmit)}>

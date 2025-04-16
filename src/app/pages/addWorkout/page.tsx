@@ -2,19 +2,17 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import Header from "@/app/components/header/Header";
-import Link from "next/link";
-import { AddForm, AddInput, FormContainer, AddButton, TrainerSelect, ClientList, ClientListTitle, ClientLabel, ClientCheckbox } from "./AddWorkout";
-import { Title } from "../mainPage/MainStyles";
-import { Wrapper } from "@/app/GlobalStyles";
-import { useEffect, useState } from "react";
-import { supabase } from "@/app/lib/supabaseClient";
+import Header from '@/app/components/header/Header';
+import { AddForm, AddInput, FormContainer, AddButton, TrainerSelect, ClientList, ClientListTitle, ClientLabel, ClientCheckbox } from './AddWorkout';
+import { Title } from '../mainPage/MainStyles';
+import { Wrapper } from '@/app/GlobalStyles';
+import { useEffect, useState } from 'react';
 import { BackLink } from '../addClient/styles';
 
 const workoutSchema = z.object({
-  workoutName: z.string().min(1, "Название обязательно"),
-  workoutDateTime: z.string().min(1, "Дата и время обязательны"),
-  trainerId: z.number().min(1, "Выберите тренера"),
+  workoutName: z.string().min(1, 'Название обязательно'),
+  workoutDateTime: z.string().min(1, 'Дата и время обязательны'),
+  trainerId: z.number().min(1, 'Выберите тренера'),
   searchQuery: z.string().optional(),
   clients: z.array(z.number()).optional()
 });
@@ -55,22 +53,18 @@ const AddWorkout = () => {
   useEffect(() => {
     const fetchTrainersAndClients = async () => {
       try {
-        const [
-          { data: trainersData, error: trainersError },
-          { data: clientsData, error: clientsError }
-        ] = await Promise.all([
-          supabase.from("trainers").select("id, trainer_name"),
-          supabase.from("clients").select("id, name")
-        ]);
+        const response = await fetch('/api/trainers-and-clients');
+        const data = await response.json();
 
-        if (trainersError) throw trainersError;
-        if (clientsError) throw clientsError;
+        if (!response.ok) {
+          throw new Error(data.error || 'Ошибка при загрузке данных');
+        }
 
-        setTrainers(trainersData || []);
-        setClients(clientsData || []);
+        setTrainers(data.trainers);
+        setClients(data.clients);
       } catch (error) {
-        console.error("Ошибка загрузки данных:", error);
-        setErrorMessage("Ошибка загрузки данных. Пожалуйста, обновите страницу.");
+        console.error('Ошибка загрузки данных:', error);
+        setErrorMessage('Ошибка загрузки данных. Пожалуйста, обновите страницу.');
       }
     };
 
@@ -79,59 +73,46 @@ const AddWorkout = () => {
 
   const handleClientCheckboxChange = (clientId: number) => {
     const currentClients = formValues.clients || [];
-  
+
     if (currentClients.includes(clientId)) {
       const newClients = currentClients.filter(id => id !== clientId);
-      setValue("clients", newClients);
+      setValue('clients', newClients);
     } else {
       if (currentClients.length >= 30) {
-        alert("Можно выбрать не более 30 клиентов.");
+        alert('Можно выбрать не более 30 клиентов.');
         return;
       }
       const newClients = [...currentClients, clientId];
-      setValue("clients", newClients);
+      setValue('clients', newClients);
     }
   };
-  
 
   const filteredClients = clients.filter(client =>
-    client.name.toLowerCase().includes((formValues.searchQuery || "").toLowerCase())
+    client.name.toLowerCase().includes((formValues.searchQuery || '').toLowerCase())
   );
 
   const onSubmit = async (data: WorkoutFormData) => {
     try {
-      const { data: workoutData, error: workoutError } = await supabase
-        .from("workouts")
-        .insert({
-          workout_name: data.workoutName,
-          workout_datetime: data.workoutDateTime,
-          trainer_id: data.trainerId,
-        })
-        .select()
-        .single();
+      const response = await fetch('/api/workouts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-      if (workoutError) throw workoutError;
+      const result = await response.json();
 
-
-      if (data.clients && data.clients.length > 0 && workoutData) {
-        const workoutClients = data.clients.map(clientId => ({
-          workout_id: workoutData.id,
-          client_id: clientId,
-        }));
-
-        const { error: clientsError } = await supabase
-          .from("workout_clients")
-          .insert(workoutClients);
-
-        if (clientsError) throw clientsError;
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при добавлении тренировки');
       }
 
-      setSuccessMessage("Тренировка успешно добавлена!");
+      setSuccessMessage('Тренировка успешно добавлена!');
       reset();
       setErrorMessage(null);
     } catch (error) {
-      console.error("Ошибка при добавлении тренировки:", error);
-      setErrorMessage("Произошла ошибка при добавлении тренировки. Пожалуйста, попробуйте снова.");
+      console.error('Ошибка при добавлении тренировки:', error);
+      setErrorMessage('Произошла ошибка при добавлении тренировки. Пожалуйста, попробуйте снова.');
       setSuccessMessage(null);
     }
   };
@@ -140,7 +121,7 @@ const AddWorkout = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href="/pages/mainPage">На главную</BackLink>
+        <BackLink href='/pages/mainPage'>На главную</BackLink>
         <Title>Добавить занятие</Title>
         
         <FormContainer>
@@ -149,38 +130,38 @@ const AddWorkout = () => {
             {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
 
             <AddInput
-              type="text"
-              placeholder="Название занятия"
-              {...register("workoutName")}
-              aria-invalid={errors.workoutName ? "true" : "false"}
+              type='text'
+              placeholder='Название занятия'
+              {...register('workoutName')}
+              aria-invalid={errors.workoutName ? 'true' : 'false'}
             />
             {errors.workoutName && <span style={{ color: 'red' }}>{errors.workoutName.message}</span>}
 
             <AddInput
-              type="datetime-local"
-              placeholder="Дата и время"
-              {...register("workoutDateTime")}
-              aria-invalid={errors.workoutDateTime ? "true" : "false"}
+              type='datetime-local'
+              placeholder='Дата и время'
+              {...register('workoutDateTime')}
+              aria-invalid={errors.workoutDateTime ? 'true' : 'false'}
             />
             {errors.workoutDateTime && <span style={{ color: 'red' }}>{errors.workoutDateTime.message}</span>}
 
             <TrainerSelect
-              {...register("trainerId", { valueAsNumber: true })}
-              aria-invalid={errors.trainerId ? "true" : "false"}
+              {...register('trainerId', { valueAsNumber: true })}
+              aria-invalid={errors.trainerId ? 'true' : 'false'}
             >
-              <option value="">Выберите тренера</option>
+              <option value=''>Выберите тренера</option>
               {trainers.map((trainer) => (
                 <option key={trainer.id} value={trainer.id}>
                   {trainer.trainer_name}
-                </option>
+                  </option>
               ))}
             </TrainerSelect>
             {errors.trainerId && <span style={{ color: 'red' }}>{errors.trainerId.message}</span>}
 
             <AddInput
-              type="text"
-              placeholder="Поиск клиентов по ФИО"
-              {...register("searchQuery")}
+              type='text'
+              placeholder='Поиск клиентов по ФИО'
+              {...register('searchQuery')}
             />
 
             <ClientList>
@@ -189,7 +170,7 @@ const AddWorkout = () => {
                 filteredClients.map((client) => (
                   <ClientLabel key={client.id}>
                     <ClientCheckbox
-                      type="checkbox"
+                      type='checkbox'
                       checked={(formValues.clients || []).includes(client.id)}
                       onChange={() => handleClientCheckboxChange(client.id)}
                     />
@@ -201,8 +182,8 @@ const AddWorkout = () => {
               )}
             </ClientList>
 
-            <AddButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Добавление..." : "Добавить тренировку"}
+            <AddButton type='submit' disabled={isSubmitting}>
+              {isSubmitting ? 'Добавление...' : 'Добавить тренировку'}
             </AddButton>
           </AddForm>
         </FormContainer>
