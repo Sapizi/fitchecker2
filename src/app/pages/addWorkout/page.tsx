@@ -53,7 +53,7 @@ const AddWorkout = () => {
   useEffect(() => {
     const fetchTrainersAndClients = async () => {
       try {
-        const response = await fetch('/api/trainers-and-clients');
+        const response = await fetch('/api/trainersAndClients');
         const data = await response.json();
 
         if (!response.ok) {
