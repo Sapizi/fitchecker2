@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { PostgrestError } from '@supabase/supabase-js';
 import Header from "@/app/components/header/Header";
-import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeBlock, DateTimeText, ButtonsBlock, LinkButton } from "./MainStyles";
+import { BigText, CardButton, CardText, MainBlock, MainContent, Title, DateTimeBlock, DateTimeText, ButtonsBlock, LinkButton, AddAdminLink } from "./MainStyles";
 import { Wrapper } from "@/app/GlobalStyles";
 import { supabase } from '../../lib/supabaseClient';
 import { withAuth } from '@/app/withAuth';
@@ -95,25 +95,25 @@ const Main = () => {
                     </MainBlock>
                         
                     <DateTimeBlock>
-                    <DateTimeText>Сегодняшняя дата</DateTimeText>
-                        <DateTimeText>{currentDateTime.date}</DateTimeText>
-                        <DateTimeText>{currentDateTime.time}</DateTimeText>
-                        <DateTimeText>Занятия на сегодня:</DateTimeText>
-                        {todayWorkouts.length === 0 ? (
-                            <DateTimeText>Занятий нет</DateTimeText>
-                        ) : (
-                            todayWorkouts.map((workout) => (
-                                <DateTimeText key={workout.id}>
-                                    {new Date(workout.workout_datetime).toLocaleTimeString('ru-RU', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })} — {workout.workout_name} ({workout.trainers?.name || 'Тренер не указан'})
-                                </DateTimeText>
-                            ))
-                        )}
+                        <DateTimeText>Сегодняшняя дата</DateTimeText>
+                            <DateTimeText>{currentDateTime.date}</DateTimeText>
+                            <DateTimeText>{currentDateTime.time}</DateTimeText>
+                            <DateTimeText>Занятия на сегодня:</DateTimeText>
+                            {todayWorkouts.length === 0 ? (
+                                <DateTimeText>Занятий нет</DateTimeText>
+                            ) : (
+                                todayWorkouts.map((workout) => (
+                                    <DateTimeText key={workout.id}>
+                                        {new Date(workout.workout_datetime).toLocaleTimeString('ru-RU', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })} — {workout.workout_name} ({workout.trainers?.name || 'Тренер не указан'})
+                                    </DateTimeText>
+                                ))
+                            )}
 
                         
-                        <Link href={'/pages/addAdmin'}>Добавить администратора</Link>
+                        <AddAdminLink href={'/pages/addAdmin'}>Добавить администратора</AddAdminLink>
                     </DateTimeBlock>
 
                     <ButtonsBlock>
