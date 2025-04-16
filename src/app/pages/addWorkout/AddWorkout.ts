@@ -3,8 +3,7 @@ import styled from "styled-components";
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%; 
+  align-items: center; 
   box-sizing: border-box;
 
   @media (max-width: 768px) {
@@ -46,7 +45,11 @@ export const AddInput = styled.input`
   border: none;
   font-size: 16px;
   box-sizing: border-box;
-
+  border-radius: 4px;
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     height: 36px;
     font-size: 14px; 
@@ -70,7 +73,9 @@ export const AddButton = styled.button`
   cursor: pointer;
   width: 100%; 
   box-sizing: border-box;
-
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 768px) {
     margin-top: 15px;
     padding: 8px 15px;
@@ -107,7 +112,7 @@ export const TrainerSelect = styled.select`
 `;
 
 export const ClientList = styled.div`
-  width: 90%;
+  width: 100%;
   max-height: 150px;
   overflow-y: auto;
   margin-top: 10px;
@@ -163,7 +168,9 @@ export const ClientCheckbox = styled.input`
   margin-right: 10px;
   width: 18px; 
   height: 18px;
-
+  &:checked{
+    accent-color: #e97c00;
+  }
   @media (max-width: 768px) {
     width: 16px;
     height: 16px;

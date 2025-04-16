@@ -25,7 +25,10 @@ export const DateFilterInput = styled.input`
   margin: 20px 0;
   background-color: #f0f0f0;
   box-sizing: border-box;
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     width: 100%; 
     max-width: 300px;
@@ -125,14 +128,17 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   padding: 5px 10px;
-  background-color: #007bff;
+
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   box-sizing: border-box;
   background-color: #e97c00;
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 768px) {
     padding: 6px 8px;
     font-size: 13px;
@@ -151,9 +157,11 @@ export const DeleteButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   box-sizing: border-box;
-
+  &:hover {
+    background-color:rgb(243, 59, 77);
+  }
   @media (max-width: 768px) {
     padding: 6px 8px;
     font-size: 13px;
@@ -223,7 +231,10 @@ export const ModalInput = styled.input`
   font-size: 16px;
   margin-bottom: 10px;
   box-sizing: border-box;
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     height: 36px;
     font-size: 14px;
@@ -246,7 +257,10 @@ export const ModalSelect = styled.select`
   margin-bottom: 10px;
   box-sizing: border-box;
   padding-left: 10px; 
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     height: 36px;
     font-size: 14px;
@@ -297,7 +311,9 @@ export const ClientCheckbox = styled.input`
   margin-right: 10px;
   width: 18px; 
   height: 18px;
-
+  &:checked{
+    accent-color: #e97c00;
+  }
   @media (max-width: 768px) {
     width: 16px;
     height: 16px;
@@ -333,7 +349,9 @@ export const SaveButton = styled.button`
   font-size: 16px;
   transition: background-color 0.3s;
   box-sizing: border-box;
-
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 768px) {
     padding: 8px 15px;
     font-size: 14px;

@@ -22,6 +22,7 @@ import {
 import { Wrapper } from '@/app/GlobalStyles';
 import { Title } from '../mainPage/MainStyles';
 import Link from 'next/link';
+import { BackLink } from '../addClient/styles';
 
 type Client = {
   id: number;
@@ -155,7 +156,7 @@ const ClientsPage = () => {
     <>
       <Header />
       <Wrapper>
-        <Link href="/pages/mainPage">На главную</Link>
+        <BackLink href="/pages/mainPage">На главную</BackLink>
         <Title>Список клиентов</Title>
 
         {loading && <LoadingText>Загрузка...</LoadingText>}

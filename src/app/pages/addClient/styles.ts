@@ -1,9 +1,16 @@
+import Link from 'next/link';
 import styled from 'styled-components';
-
-// Контейнер формы
+export  const BackLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  margin-bottom: 10px !important;
+  &:hover {
+    color: #e97c00;
+  }
+`
 export const FormWrapper = styled.div`
   max-width: 500px;
-  margin: 50px auto;
+  margin: 80px auto;
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
@@ -63,7 +70,10 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box; 
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     padding: 7px; 
     font-size: 14px; 
@@ -83,7 +93,10 @@ export const Select = styled.select`
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     padding: 7px;
     font-size: 14px;

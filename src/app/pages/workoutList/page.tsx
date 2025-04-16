@@ -29,6 +29,7 @@ import {
   WorkoutsContainer,
   WorkoutTitle,
 } from './styles';
+import { BackLink } from '../addClient/styles';
 
 interface Trainer {
   id: number;
@@ -143,17 +144,26 @@ const WorkoutsList = () => {
   }, []);
 
   const filteredWorkouts = selectedDate
-    ? workouts.filter((workout) =>
-        new Date(workout.workout_datetime).toISOString().split('T')[0] === selectedDate
-      )
-    : workouts;
+  ? workouts.filter((workout) => {
+      const localDate = new Date(workout.workout_datetime).toLocaleDateString('sv-SE'); 
+      return localDate === selectedDate;
+    })
+  : workouts;
+
 
   const handleEdit = (workout: Workout) => {
     setEditingWorkout(workout);
     setEditSelectedClients(workout.workout_clients.map((wc) => wc.client_id));
     reset({
       workout_name: workout.workout_name,
-      workout_datetime: new Date(workout.workout_datetime).toISOString().slice(0, 16),
+      workout_datetime: new Date(workout.workout_datetime).toLocaleString('ru-RU', {
+        timeZone: 'Europe/Moscow',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).slice(0, 16),
       trainer_id: workout.trainer_id,
     });
   };
@@ -287,7 +297,7 @@ const WorkoutsList = () => {
     <>
       <Header />
       <Wrapper>
-        <Link href="/pages/mainPage">На главную</Link>
+        <BackLink href="/pages/mainPage">На главную</BackLink>
         <Title>Список тренировок</Title>
         <WorkoutsContainer>
           <DateFilterInput
@@ -300,8 +310,15 @@ const WorkoutsList = () => {
               <WorkoutCard key={workout.id}>
                 <WorkoutTitle>{workout.workout_name}</WorkoutTitle>
                 <WorkoutInfo>
-                  Дата и время: {new Date(workout.workout_datetime).toLocaleString()}
-                </WorkoutInfo>
+                Дата и время: {new Date(workout.workout_datetime).toLocaleString('ru-RU', {
+                  timeZone: 'UTC',
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </WorkoutInfo>
                 <WorkoutInfo>Тренер: {workout.trainers.trainer_name}</WorkoutInfo>
                 <WorkoutInfo>Участники:</WorkoutInfo>
                 <ClientList>

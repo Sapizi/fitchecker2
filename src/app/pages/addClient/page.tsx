@@ -14,10 +14,12 @@ import {
   Select, 
   SubmitButton, 
   SuccessMessage, 
-  Form 
+  Form, 
+  BackLink
 } from './styles';
 import { Title } from '../mainPage/MainStyles';
 import Link from 'next/link';
+import { Wrapper } from '@/app/GlobalStyles';
 
 type FormData = {
   name: string;
@@ -80,71 +82,74 @@ const Page = () => {
   return (
     <>
       <Header />
-      <Link href='/pages/mainPage'>Назад</Link>
-      <FormWrapper>
-        <FormTitle>Добавить клиента</FormTitle>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormField>
-            <Label htmlFor="name">ФИО</Label>
-            <Input
-              type="text"
-              id="name"
-              {...register('name', { required: 'Поле обязательно для заполнения' })}
-              placeholder="Введите ФИО"
-              aria-invalid={errors.name ? "true" : "false"}
-            />
-            {errors.name && <ErrorMessage role="alert">{errors.name.message}</ErrorMessage>}
-          </FormField>
+      <Wrapper>
 
-          <FormField>
-            <Label htmlFor="sex">Пол</Label>
-            <Select 
-              id="sex" 
-              {...register('sex')}
-            >
-              <option value="male">Мужской</option>
-              <option value="female">Женский</option>
-            </Select>
-          </FormField>
+        <BackLink href='/pages/mainPage'>Назад</BackLink>
+        <Title>Добавить клиента</Title>
+        <FormWrapper>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormField>
+              <Label htmlFor="name">ФИО</Label>
+              <Input
+                type="text"
+                id="name"
+                {...register('name', { required: 'Поле обязательно для заполнения' })}
+                placeholder="Введите ФИО"
+                aria-invalid={errors.name ? "true" : "false"}
+              />
+              {errors.name && <ErrorMessage role="alert">{errors.name.message}</ErrorMessage>}
+            </FormField>
 
-          <FormField>
-            <Label htmlFor="age">Возраст</Label>
-            <Input
-              type="number"
-              id="age"
-              {...register('age', { 
-                required: 'Поле обязательно для заполнения',
-                validate: value => {
-                  const num = parseInt(value, 10);
-                  return !isNaN(num) && num > 0 || 'Возраст должен быть положительным числом';
-                }
-              })}
-              placeholder="Введите возраст"
-              aria-invalid={errors.age ? "true" : "false"}
-            />
-            {errors.age && <ErrorMessage role="alert">{errors.age.message}</ErrorMessage>}
-          </FormField>
+            <FormField>
+              <Label htmlFor="sex">Пол</Label>
+              <Select 
+                id="sex" 
+                {...register('sex')}
+              >
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+              </Select>
+            </FormField>
 
-          <FormField>
-            <Label htmlFor="subscription">Тип абонемента</Label>
-            <Select
-              id="subscription"
-              {...register('subscription')}
-            >
-              <option value="monthly">Месячный</option>
-              <option value="quarterly">Квартальный</option>
-              <option value="yearly">Годовой</option>
-            </Select>
-          </FormField>
+            <FormField>
+              <Label htmlFor="age">Возраст</Label>
+              <Input
+                type="number"
+                id="age"
+                {...register('age', { 
+                  required: 'Поле обязательно для заполнения',
+                  validate: value => {
+                    const num = parseInt(value, 10);
+                    return !isNaN(num) && num > 0 || 'Возраст должен быть положительным числом';
+                  }
+                })}
+                placeholder="Введите возраст"
+                aria-invalid={errors.age ? "true" : "false"}
+              />
+              {errors.age && <ErrorMessage role="alert">{errors.age.message}</ErrorMessage>}
+            </FormField>
 
-          <SubmitButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Добавление...' : 'Добавить клиента'}
-          </SubmitButton>
+            <FormField>
+              <Label htmlFor="subscription">Тип абонемента</Label>
+              <Select
+                id="subscription"
+                {...register('subscription')}
+              >
+                <option value="monthly">Месячный</option>
+                <option value="quarterly">Квартальный</option>
+                <option value="yearly">Годовой</option>
+              </Select>
+            </FormField>
 
-          {errors.root && <ErrorMessage role="alert">{errors.root.message}</ErrorMessage>}
-          {success && <SuccessMessage role="status">{success}</SuccessMessage>}
-        </Form>
-      </FormWrapper>
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Добавление...' : 'Добавить клиента'}
+            </SubmitButton>
+
+            {errors.root && <ErrorMessage role="alert">{errors.root.message}</ErrorMessage>}
+            {success && <SuccessMessage role="status">{success}</SuccessMessage>}
+          </Form>
+        </FormWrapper>
+      </Wrapper>
     </>
   );
 };

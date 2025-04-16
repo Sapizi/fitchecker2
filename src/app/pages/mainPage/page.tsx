@@ -37,11 +37,13 @@ const Main = () => {
         const updateDateTime = () => {
             const now = new Date();
             const date = now.toLocaleDateString('ru-RU', {
+                timeZone: 'UTC',
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
             }).replace(/\./g, '/');
             const time = now.toLocaleTimeString('ru-RU', {
+                timeZone: 'UTC',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: false,
@@ -55,26 +57,30 @@ const Main = () => {
 
     useEffect(() => {
         const fetchTodayWorkouts = async () => {
-            const startOfDay = new Date();
-            startOfDay.setHours(0, 0, 0, 0);
-            const endOfDay = new Date();
-            endOfDay.setHours(23, 59, 59, 999);
-
+            const now = new Date();
+            const startOfDay = new Date(now.setUTCHours(0, 0, 0, 0)); 
+            const endOfDay = new Date(now.setUTCHours(23, 59, 59, 999));
+    
+            console.log('Start of day (UTC):', startOfDay.toISOString());
+            console.log('End of day (UTC):', endOfDay.toISOString());
+            console.log('Current date:', now.toISOString());
+    
             const { data: workouts, error } = await supabase
                 .from('workouts')
                 .select('id, workout_name, workout_datetime, trainers(trainer_name)')
                 .gte('workout_datetime', startOfDay.toISOString())
                 .lte('workout_datetime', endOfDay.toISOString())
                 .order('workout_datetime', { ascending: true })
-                .limit(3);
-
+                .limit(5);
+    
             if (error) {
                 console.error('Ошибка при загрузке занятий:', error.message);
             } else {
-                setTodayWorkouts(workouts);
+                console.log('Занятия на сегодня:', workouts);
+                setTodayWorkouts(workouts || []);
             }
         };
-
+    
         fetchTodayWorkouts();
     }, []);
 
@@ -105,9 +111,10 @@ const Main = () => {
                                 todayWorkouts.map((workout) => (
                                     <DateTimeText key={workout.id}>
                                         {new Date(workout.workout_datetime).toLocaleTimeString('ru-RU', {
+                                            timeZone: 'UTC',
                                             hour: '2-digit',
                                             minute: '2-digit',
-                                        })} — {workout.workout_name} ({workout.trainers?.name || 'Тренер не указан'})
+                                        })} — {workout.workout_name} 
                                     </DateTimeText>
                                 ))
                             )}

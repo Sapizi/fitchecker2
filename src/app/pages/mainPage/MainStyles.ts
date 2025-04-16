@@ -11,6 +11,7 @@ export const MainContent = styled.div`
 
 export const Title = styled.h1`
   font-size: 46px;
+  margin-bottom: 10px;
   @media (max-width: 426px){
     font-size: 38px;
   }
@@ -59,10 +60,14 @@ export const CardButton = styled(Link)`
   align-content: center;
   border-radius: 10px;
   color: white;
-  font-size: 36px;
+  font-size: 28px;
   text-decoration: none;
   margin-top: 26px;
   box-sizing: border-box;
+  transition: 0.3s;
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 426px){
     margin-left: 10px;
     font-size: 24px;
@@ -116,7 +121,10 @@ export const LinkButton = styled(Link)`
   text-decoration: none;
   margin-top: 26px;
   box-sizing: border-box;
-
+  transition: 0.3s;
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 426px){
     width: 360px;
     margin-left: 13px;

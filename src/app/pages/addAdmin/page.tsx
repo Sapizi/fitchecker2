@@ -11,6 +11,7 @@ import { Form } from "react-hook-form"
 import { Forma, MainButton, MainInput } from "@/app/components/authform/AuthFormStyles"
 import { FormContainer } from "../addWorkout/AddWorkout"
 import Link from "next/link"
+import { BackLink, Label } from "../addClient/styles"
 
 const AddAdmin = () => {
   const [username, setUsername] = useState("")
@@ -50,10 +51,11 @@ const AddAdmin = () => {
     <>
       <Header />
       <Wrapper>
-        <Link href={'/pages/mainPage'}>На главную</Link>
+        <BackLink href={'/pages/mainPage'}>На главную</BackLink>
         <Title>Добавление администратора</Title>
         <FormContainer>
           <Forma onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: 300 }}>
+            <Label>Имя пользователя</Label>
             <MainInput
               type="text"
               placeholder="Имя пользователя"
@@ -61,6 +63,7 @@ const AddAdmin = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+            <Label>Пароль</Label>
             <MainInput
               type="password"
               placeholder="Пароль"

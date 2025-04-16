@@ -9,7 +9,7 @@ export const ClientList = styled.ul`
   gap: 15px;
   width: 100%; 
   box-sizing: border-box;
-
+  margin-bottom: 20px;
   @media (max-width: 768px) {
     gap: 10px; 
   }
@@ -97,7 +97,9 @@ export const Button = styled.button`
   cursor: pointer;
   font-size: 16px; 
   box-sizing: border-box;
-
+  &:hover {
+    background-color: #ca6c00;
+  }
   @media (max-width: 768px) {
     padding: 7px 12px;
     margin-left: 0; 
@@ -131,7 +133,10 @@ export const EditInput = styled.input`
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     padding: 7px;
     font-size: 14px;
@@ -151,7 +156,10 @@ export const EditSelect = styled.select`
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-
+  &:focus {
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
+  }
   @media (max-width: 768px) {
     padding: 7px;
     font-size: 14px;

@@ -9,6 +9,7 @@ import { Title } from "../mainPage/MainStyles";
 import { Wrapper } from "@/app/GlobalStyles";
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
+import { BackLink } from '../addClient/styles';
 
 const workoutSchema = z.object({
   workoutName: z.string().min(1, "Название обязательно"),
@@ -139,7 +140,7 @@ const AddWorkout = () => {
     <>
       <Header />
       <Wrapper>
-        <Link href="/pages/mainPage">На главную</Link>
+        <BackLink href="/pages/mainPage">На главную</BackLink>
         <Title>Добавить занятие</Title>
         
         <FormContainer>

@@ -4,7 +4,7 @@ export const AllMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
+  height: 90vh; 
   padding: 20px; 
   box-sizing: border-box;
 `;
@@ -15,6 +15,7 @@ export  const Forma = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 150px;
   padding: 30px; 
   background-color: #f7f7f7;
   border-radius: 8px;
@@ -40,13 +41,13 @@ export const MainInput = styled.input`
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   outline: none;
   width: 100%; 
   box-sizing: border-box;
   &:focus {
-    border-color: #e97c00;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: 2px solid #e97c00;
+    outline-offset: 2px;
   }
   @media (max-width: 600px) {
     padding: 10px; 
