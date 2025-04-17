@@ -22,6 +22,9 @@ export const Title = styled.h1`
   @media (max-width: 426px){
     font-size: 38px;
   }
+  @media (max-width: 375px){
+    font-size: 36px;
+  }
   @media (max-width: 320px){
     font-size: 32px;
   }

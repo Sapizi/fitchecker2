@@ -10,22 +10,32 @@ export  const BackLink = styled(Link)`
 `
 export const FormWrapper = styled.div`
   max-width: 500px;
-  margin: 80px auto;
+  margin-left: 350px;
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
   background-color: #f9f9f9;
   box-sizing: border-box; 
   width: 90%; 
-
+  margin-top: 10%;
+  @media (max-width: 1440px) {
+    margin: 250px; 
+    padding: 15px; 
+    margin-top: 10%; 
+  }
+  @media (max-width: 1024px) {
+    margin: 200px; 
+    padding: 15px; 
+    margin-top: 10%; 
+  }
   @media (max-width: 768px) {
-    margin: 20px auto; 
+    margin: 90px; 
     padding: 15px; 
     margin-top: 5%; 
   }
 
-  @media (max-width: 480px) {
-    padding: 10px; 
+  @media (max-width: 425px) {
+    margin-left: 35px;
   }
 `;
 
