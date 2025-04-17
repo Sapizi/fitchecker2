@@ -123,7 +123,7 @@ const AddWorkout = () => {
       <Header />
       <Wrapper>
         <BackLink href='/pages/mainPage'>На главную</BackLink>
-        <Title>Добавить занятие</Title>
+        <Title>Добавить тренировку</Title>
         
         <FormContainer>
           <AddForm onSubmit={handleSubmit(onSubmit)}>

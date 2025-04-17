@@ -116,7 +116,7 @@ const Main = () => {
           </DateTimeBlock>
 
           <ButtonsBlock>
-            <LinkButton href='/pages/addWorkout'>Добавить занятие</LinkButton>
+            <LinkButton href='/pages/addWorkout'>Добавить тренировку</LinkButton>
             <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>
             <LinkButton href='/pages/workoutList'>Список тренировок</LinkButton>
           </ButtonsBlock>
