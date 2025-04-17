@@ -12,6 +12,7 @@ import { Forma, MainButton, MainInput } from "@/app/components/authform/AuthForm
 import { FormContainer } from "../addWorkout/AddWorkout"
 import Link from "next/link"
 import { BackLink, Label } from "../addClient/styles"
+import { Container } from "./AddAdminStyles"
 
 const AddAdmin = () => {
   const [username, setUsername] = useState("")
@@ -54,25 +55,27 @@ const AddAdmin = () => {
         <BackLink href={'/pages/mainPage'}>На главную</BackLink>
         <Title>Добавление администратора</Title>
         <FormContainer>
-          <Forma onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column'}}>
-            <Label>Имя пользователя</Label>
-            <MainInput
-              type="text"
-              placeholder="Имя пользователя"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            <Label>Пароль</Label>
-            <MainInput
-              type="password"
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <MainButton type="submit">Добавить</MainButton>
-          </Forma>
+          <Container>
+            <Forma onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column'}}>
+              <Label>Имя пользователя</Label>
+              <MainInput
+                type="text"
+                placeholder="Имя пользователя"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <Label>Пароль</Label>
+              <MainInput
+                type="password"
+                placeholder="Пароль"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <MainButton type="submit">Добавить</MainButton>
+            </Forma>
+          </Container>
           {message && <p>{message}</p>}
         </FormContainer>
       </Wrapper>

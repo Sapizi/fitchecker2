@@ -15,3 +15,6 @@ export const Form = styled.form`
         gap: 15px; 
     }
 `
+export const Container = styled.div`
+    margin-top: 200px;
+`
