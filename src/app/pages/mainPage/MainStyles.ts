@@ -19,6 +19,12 @@ export const MainContent = styled.div`
 export const Title = styled.h1`
   font-size: 46px;
   margin-bottom: 10px;
+  @media (max-width: 768px){
+    margin-left: 20px;
+  }
+  @media (max-width: 520px){
+    font-size: 40px;
+  }
   @media (max-width: 426px){
     font-size: 38px;
   }
@@ -26,7 +32,7 @@ export const Title = styled.h1`
     font-size: 36px;
   }
   @media (max-width: 320px){
-    font-size: 32px;
+    font-size: 28px;
   }
 `;
 

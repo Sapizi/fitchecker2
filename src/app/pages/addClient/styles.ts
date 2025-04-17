@@ -7,35 +7,38 @@ export  const BackLink = styled(Link)`
   &:hover {
     color: #e97c00;
   }
+  @media (max-width: 768px){
+    margin-left: 20px;
+  }
 `
 export const FormWrapper = styled.div`
   max-width: 500px;
-  margin-left: 350px;
+  width: 90%;
+  margin: 10% auto; /* Центрируем по горизонтали */
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
   background-color: #f9f9f9;
-  box-sizing: border-box; 
-  width: 90%; 
-  margin-top: 10%;
+  box-sizing: border-box;
+
   @media (max-width: 1440px) {
-    margin: 250px; 
-    padding: 15px; 
-    margin-top: 10%; 
+    margin: 10% auto; /* Сохраняем центрирование */
+    padding: 15px;
   }
+
   @media (max-width: 1024px) {
-    margin: 200px; 
-    padding: 15px; 
-    margin-top: 10%; 
+    margin: 10% auto; /* Сохраняем центрирование */
+    padding: 15px;
   }
+
   @media (max-width: 768px) {
-    margin: 90px; 
-    padding: 15px; 
-    margin-top: 5%; 
+    margin: 5% auto; /* Сохраняем центрирование, уменьшаем верхний отступ */
+    padding: 15px;
   }
 
   @media (max-width: 425px) {
-    margin-left: 35px;
+    margin: 5% auto; /* Сохраняем центрирование */
+    padding: 10px;
   }
 `;
 

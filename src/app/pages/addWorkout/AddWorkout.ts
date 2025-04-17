@@ -3,33 +3,32 @@ import styled from "styled-components";
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
+  justify-content: center; /* Добавляем центрирование по вертикали, если нужно */
+  width: 100%;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 0 10px; 
+    padding: 0 10px;
   }
 `;
-
 export const AddForm = styled.form`
   width: 500px;
-  max-width: 90%; 
+  max-width: 90%;
   margin: 50px auto;
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
   background-color: #f9f9f9;
-  margin-top: 5%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    margin: 20px auto; 
-    padding: 15px; 
-    margin-top: 3%; 
-    gap: 8px; 
+    margin: 20px auto;
+    padding: 15px;
+    gap: 8px;
   }
 
   @media (max-width: 480px) {
