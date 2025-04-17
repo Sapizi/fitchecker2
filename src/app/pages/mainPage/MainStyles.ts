@@ -7,15 +7,15 @@ export const MainContent = styled.div`
 
   @media (max-width: 894px) {
     flex-direction: column;
-    align-items: center; /* Центрируем дочерние элементы */
-    margin-left: 0; /* Убираем смещение */
-    padding: 0 10px; /* Добавляем симметричные отступы для визуального баланса */
+    align-items: center; 
+    margin-left: 0; 
+    padding: 0 10px; 
   }
 
   @media (max-width: 425px) {
     flex-direction: column;
     align-items: center;
-    margin-left: 0; /* Убираем смещение */
+    margin-left: 0; 
     padding: 0 5px;
   }
 `;

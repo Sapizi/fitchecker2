@@ -4,12 +4,12 @@ export const AllMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Используем min-height вместо height для учета Header */
+  min-height: 90vh; 
   padding: 20px;
   box-sizing: border-box;
 
   @media (max-width: 600px) {
-    padding: 10px; /* Уменьшаем padding на малых экранах */
+    padding: 10px; 
   }
 `;
 export const Forma = styled.form`
@@ -27,7 +27,7 @@ export const Forma = styled.form`
   @media (max-width: 600px) {
     padding: 20px;
     gap: 15px;
-    margin-top: 0; /* Убираем margin-top на малых экранах */
+    margin-top: 0; 
   }
 `;
 

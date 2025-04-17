@@ -59,7 +59,7 @@ const WorkoutsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Получение тренеров и клиентов
+
         const trainersClientsResponse = await fetch('/api/trainers-and-clients');
         const trainersClientsData = await trainersClientsResponse.json();
         if (!trainersClientsResponse.ok) {
@@ -68,7 +68,6 @@ const WorkoutsList = () => {
         setTrainers(trainersClientsData.trainers || []);
         setClients(trainersClientsData.clients || []);
 
-        // Получение тренировок
         const workoutsResponse = await fetch('/api/workout');
         const workoutsData = await workoutsResponse.json();
         if (!workoutsResponse.ok) {

@@ -1,8 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
 export const Wrapper = styled.div`
-  margin: 3% auto; /* Центрируем по горизонтали с верхним отступом */
-  max-width: 1200px; /* Ограничиваем максимальную ширину для больших экранов */
-  padding: 0 15px; /* Симметричные внутренние отступы */
+  margin: 3% auto;
+  max-width: 1200px; 
+  padding: 0 15px; 
   box-sizing: border-box;
 
   @media (max-width: 1300px) {

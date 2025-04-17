@@ -14,7 +14,7 @@ export  const BackLink = styled(Link)`
 export const FormWrapper = styled.div`
   max-width: 500px;
   width: 90%;
-  margin: 10% auto; /* Центрируем по горизонтали */
+  margin: 10% auto; 
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
@@ -22,22 +22,22 @@ export const FormWrapper = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 1440px) {
-    margin: 10% auto; /* Сохраняем центрирование */
+    margin: 10% auto;
     padding: 15px;
   }
 
   @media (max-width: 1024px) {
-    margin: 10% auto; /* Сохраняем центрирование */
+    margin: 10% auto;
     padding: 15px;
   }
 
   @media (max-width: 768px) {
-    margin: 5% auto; /* Сохраняем центрирование, уменьшаем верхний отступ */
+    margin: 5% auto; 
     padding: 15px;
   }
 
   @media (max-width: 425px) {
-    margin: 5% auto; /* Сохраняем центрирование */
+    margin: 5% auto; 
     padding: 10px;
   }
 `;
