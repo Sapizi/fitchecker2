@@ -18,9 +18,16 @@ export const HeaderLogo = styled.h1`
         font-size: 48px;
         margin-left: 24px;
     }
+    @media (max-width: 375px) {
+        font-size: 42px;
+        margin-left: 24px;
+    }
+    @media (max-width: 320px) {
+        font-size: 36px;
+        margin-left: 24px;
+    }
 `
 export const LogoutButton = styled.button`
-    padding: 0.5rem 1rem;
     background-color: #e97c00;
     padding-right: 62px;
     color: white;
@@ -34,5 +41,8 @@ export const LogoutButton = styled.button`
     }
     @media (max-width: 768px) {
         padding-right: 31px;
+    }
+    @media (max-width: 320px){
+        padding-right: 0x;
     }
 `;

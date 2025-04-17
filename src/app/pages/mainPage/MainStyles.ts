@@ -4,8 +4,15 @@ export const MainContent = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  @media (max-width: 426px){
+  @media (max-width: 768px){
     flex-direction: column;
+    align-items: center;
+    margin-left: 60px;
+  }
+  @media (max-width: 425px){
+    flex-direction: column;
+    align-items: center;
+    margin-left: 40px;
   }
 `;
 
@@ -15,6 +22,9 @@ export const Title = styled.h1`
   @media (max-width: 426px){
     font-size: 38px;
   }
+  @media (max-width: 320px){
+    font-size: 32px;
+  }
 `;
 
 export const MainBlock = styled.div`
@@ -23,8 +33,24 @@ export const MainBlock = styled.div`
   border: 2px solid black;
   border-radius: 10px;
   box-sizing: border-box;
+  @media (max-width: 1024px){
+    width: 420px;
+    height: 610px;
+  }
+  @media (max-width: 768px){
+    width: 460px;
+    height: 610px;
+  }
   @media (max-width: 426px){
     width: 385px;
+    height: 610px;
+  }
+  @media (max-width: 375px){
+    width: 365px;
+    height: 610px;
+  }
+  @media (max-width: 375px){
+    width: 300px;
     height: 610px;
   }
 `;
@@ -36,12 +62,21 @@ export const BigText = styled.span`
   @media (max-width: 426px){
     margin-left: 0px;
   } 
+  
 `;
 
 export const CardText = styled.p`
   margin-top: 110px;
   font-size: 28px;
   margin-left: 36px;
+  @media (max-width: 1024px){
+    margin-left: 10px;
+    font-size: 24px;
+  } 
+  @media (max-width: 768px){
+    margin-left: 36px;
+    font-size: 26px;
+  } 
   @media (max-width: 426px){
     margin-left: 10px;
     font-size: 24px;
@@ -68,10 +103,38 @@ export const CardButton = styled(Link)`
   &:hover {
     background-color: #ca6c00;
   }
+  @media (max-width: 1440px){
+    height: 85px;
+    width: 350px;
+    margin-right: 30px;
+  } 
+  @media (max-width: 1024px){
+    height: 85px;
+    width: 290px;
+    margin-right: 30px;
+  } 
+  @media (max-width: 768px){
+    margin-left: 36px;
+    width: 384px;
+  } 
   @media (max-width: 426px){
     margin-left: 10px;
     font-size: 24px;
     width: 360px;
+  } 
+  @media (max-width: 426px){
+    
+    width: 360px;
+  } 
+  @media (max-width: 375px){
+    
+    width: 275px;
+    height: 75px;
+  } 
+  @media (max-width: 320px){
+    
+    width: 275px;
+    height: 70px;
   } 
   
 `;
@@ -80,9 +143,7 @@ export const DateTimeBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 426px){
-    margin-left: 50px;
-  }
+  
   
 `;
 
@@ -103,14 +164,14 @@ export const ButtonsBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-
+  margin-bottom: 20px;
   
 `;
 
 export const LinkButton = styled(Link)`
   display: block;
   text-align: center;
-  margin-left: 33px;
+  
   width: 384px;
   height: 165px;
   background-color: #e97c00;
@@ -125,10 +186,23 @@ export const LinkButton = styled(Link)`
   &:hover {
     background-color: #ca6c00;
   }
+  @media (max-width: 1024px){
+    width: 330px;
+    height: 165px;
+  }
   @media (max-width: 426px){
     width: 360px;
-    margin-left: 13px;
-    margin-bottom: 20px;
+    margin-left: 0px;
+
+  }
+  @media (max-width: 375px){
+    width: 340px;
+    margin-left: 0;
+  }
+  @media (max-width: 375px){
+    width: 300px;
+    margin-left: 0;
+    font-size: 24px;
   }
 `;
   
