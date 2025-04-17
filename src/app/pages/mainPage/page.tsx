@@ -84,7 +84,7 @@ const Main = () => {
         <MainContent>
           <MainBlock>
             {loading ? (
-              <BigText>Загрузка...</BigText>
+              <BigText>0</BigText>
             ) : error ? (
               <BigText style={{ color: 'red' }}>{error}</BigText>
             ) : (
