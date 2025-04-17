@@ -4,31 +4,8 @@ import Link from 'next/link';
 import { Title } from '../mainPage/MainStyles';
 import { Wrapper } from '@/app/GlobalStyles';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/app/lib/supabaseClient';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import {
-  ButtonContainer,
-  CancelButton,
-  ClientCheckbox,
-  ClientItem,
-  ClientLabel,
-  ClientList,
-  ClientListModal,
-  DateFilterInput,
-  DeleteButton,
-  EditButton,
-  Modal,
-  ModalButtonContainer,
-  ModalContent,
-  ModalInput,
-  ModalSelect,
-  ModalTitle,
-  SaveButton,
-  WorkoutCard,
-  WorkoutInfo,
-  WorkoutsContainer,
-  WorkoutTitle,
-} from './styles';
+import {ButtonContainer,CancelButton,ClientCheckbox,ClientItem,ClientLabel,ClientList,ClientListModal,DateFilterInput,DeleteButton,EditButton,Modal,ModalButtonContainer,ModalContent,ModalInput,ModalSelect,ModalTitle,SaveButton,WorkoutCard,WorkoutInfo,WorkoutsContainer,WorkoutTitle,} from './styles';
 import { BackLink } from '../addClient/styles';
 
 interface Trainer {
@@ -63,6 +40,7 @@ const WorkoutsList = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null);
   const [editSelectedClients, setEditSelectedClients] = useState<number[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -79,46 +57,31 @@ const WorkoutsList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: trainersData, error: trainersError } = await supabase
-        .from('trainers')
-        .select('id, trainer_name');
-      if (trainersError) {
-        console.error('Ошибка загрузки тренеров:', trainersError);
-      } else {
-        setTrainers(trainersData || []);
-      }
+      try {
+        // Получение тренеров и клиентов
+        const trainersClientsResponse = await fetch('/api/trainers-and-clients');
+        const trainersClientsData = await trainersClientsResponse.json();
+        if (!trainersClientsResponse.ok) {
+          throw new Error(trainersClientsData.error || 'Ошибка при загрузке тренеров и клиентов');
+        }
+        setTrainers(trainersClientsData.trainers || []);
+        setClients(trainersClientsData.clients || []);
 
-      const { data: clientsData, error: clientsError } = await supabase
-        .from('clients')
-        .select('id, name');
-      if (clientsError) {
-        console.error('Ошибка загрузки клиентов:', clientsError);
-      } else {
-        setClients(clientsData || []);
-      }
+        // Получение тренировок
+        const workoutsResponse = await fetch('/api/workout');
+        const workoutsData = await workoutsResponse.json();
+        if (!workoutsResponse.ok) {
+          throw new Error(workoutsData.error || 'Ошибка при загрузке тренировок');
+        }
 
-      const { data: workoutsData, error: workoutsError } = await supabase
-        .from('workouts')
-        .select(`
-          id,
-          workout_name,
-          workout_datetime,
-          trainer_id,
-          trainers:trainer_id (trainer_name),
-          workout_clients (client_id, clients:client_id (name))
-        `);
-
-      if (workoutsError) {
-        console.error('Ошибка загрузки тренировок:', workoutsError);
-      } else {
         const formattedWorkouts: Workout[] = workoutsData.map((workout: any) => {
-          const trainer = trainersData?.find((t) => t.id === workout.trainer_id);
+          const trainer = trainersClientsData.trainers?.find((t: Trainer) => t.id === workout.trainer_id);
           const formattedTrainer = trainer
             ? { id: trainer.id, trainer_name: trainer.trainer_name }
             : { id: workout.trainer_id, trainer_name: `Тренер не найден (ID: ${workout.trainer_id})` };
 
           const formattedClients = workout.workout_clients.map((wc: any) => {
-            const client = clientsData?.find((c) => c.id === wc.client_id);
+            const client = trainersClientsData.clients?.find((c: Client) => c.id === wc.client_id);
             return {
               client_id: wc.client_id,
               clients: client
@@ -136,7 +99,11 @@ const WorkoutsList = () => {
             workout_clients: formattedClients,
           };
         });
+
         setWorkouts(formattedWorkouts);
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+        setError(`Ошибка загрузки данных: ${(error as Error).message}`);
       }
     };
 
@@ -144,26 +111,18 @@ const WorkoutsList = () => {
   }, []);
 
   const filteredWorkouts = selectedDate
-  ? workouts.filter((workout) => {
-      const localDate = new Date(workout.workout_datetime).toLocaleDateString('sv-SE'); 
-      return localDate === selectedDate;
-    })
-  : workouts;
-
+    ? workouts.filter((workout) => {
+        const localDate = new Date(workout.workout_datetime).toLocaleDateString('sv-SE');
+        return localDate === selectedDate;
+      })
+    : workouts;
 
   const handleEdit = (workout: Workout) => {
     setEditingWorkout(workout);
     setEditSelectedClients(workout.workout_clients.map((wc) => wc.client_id));
     reset({
       workout_name: workout.workout_name,
-      workout_datetime: new Date(workout.workout_datetime).toLocaleString('ru-RU', {
-        timeZone: 'Europe/Moscow',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).slice(0, 16),
+      workout_datetime: new Date(workout.workout_datetime).toISOString().slice(0, 16),
       trainer_id: workout.trainer_id,
     });
   };
@@ -172,72 +131,35 @@ const WorkoutsList = () => {
     if (!editingWorkout) return;
 
     try {
-      const { error: updateError } = await supabase
-        .from('workouts')
-        .update({
+      const response = await fetch(`/api/workout/${editingWorkout.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           workout_name: data.workout_name,
           workout_datetime: data.workout_datetime,
           trainer_id: data.trainer_id,
-        })
-        .eq('id', editingWorkout.id);
+          clients: editSelectedClients,
+        }),
+      });
 
-      if (updateError) {
-        console.error('Ошибка обновления тренировки:', updateError);
-        alert('Ошибка при обновлении тренировки!');
-        return;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при обновлении тренировки');
       }
 
-      await supabase
-        .from('workout_clients')
-        .delete()
-        .eq('workout_id', editingWorkout.id);
-
-      if (editSelectedClients.length > 0) {
-        const workoutClients = editSelectedClients.map((clientId) => ({
-          workout_id: editingWorkout.id,
-          client_id: clientId,
-        }));
-
-        const { error: clientsError } = await supabase
-          .from('workout_clients')
-          .insert(workoutClients);
-
-        if (clientsError) {
-          console.error('Ошибка добавления клиентов:', clientsError);
-          alert('Тренировка обновлена, но произошла ошибка при добавлении клиентов!');
-          return;
-        }
-      }
-
-      const { data: updatedWorkoutData, error: fetchError } = await supabase
-        .from('workouts')
-        .select(`
-          id,
-          workout_name,
-          workout_datetime,
-          trainer_id,
-          trainers:trainer_id (trainer_name),
-          workout_clients (client_id, clients:client_id (name))
-        `)
-        .eq('id', editingWorkout.id)
-        .single();
-
-      if (fetchError) {
-        console.error('Ошибка получения обновленной тренировки:', fetchError);
-        alert('Тренировка обновлена, но не удалось обновить список!');
-        return;
-      }
-
-      if (updatedWorkoutData) {
-        const trainer = trainers.find((t) => t.id === updatedWorkoutData.trainer_id);
-        const formattedTrainer = trainer
-          ? { id: trainer.id, trainer_name: trainer.trainer_name }
-          : {
-              id: updatedWorkoutData.trainer_id,
-              trainer_name: `Тренер не найден (ID: ${updatedWorkoutData.trainer_id})`,
-            };
-
-        const formattedClients = updatedWorkoutData.workout_clients.map((wc: any) => {
+      const updatedWorkout: Workout = {
+        id: result.workout.id,
+        workout_name: result.workout.workout_name,
+        workout_datetime: result.workout.workout_datetime,
+        trainer_id: result.workout.trainer_id,
+        trainers: trainers.find((t) => t.id === result.workout.trainer_id) || {
+          id: result.workout.trainer_id,
+          trainer_name: `Тренер не найден (ID: ${result.workout.trainer_id})`,
+        },
+        workout_clients: result.workout.workout_clients.map((wc: any) => {
           const client = clients.find((c) => c.id === wc.client_id);
           return {
             client_id: wc.client_id,
@@ -245,27 +167,17 @@ const WorkoutsList = () => {
               ? { id: client.id, name: client.name }
               : { id: wc.client_id, name: `Клиент не найден (ID: ${wc.client_id})` },
           };
-        });
+        }),
+      };
 
-        const updatedWorkout: Workout = {
-          id: updatedWorkoutData.id,
-          workout_name: updatedWorkoutData.workout_name,
-          workout_datetime: updatedWorkoutData.workout_datetime,
-          trainer_id: updatedWorkoutData.trainer_id,
-          trainers: formattedTrainer,
-          workout_clients: formattedClients,
-        };
-
-        setWorkouts(workouts.map((w) => (w.id === editingWorkout.id ? updatedWorkout : w)));
-      }
-
+      setWorkouts(workouts.map((w) => (w.id === editingWorkout.id ? updatedWorkout : w)));
       alert('Тренировка успешно обновлена!');
       setEditingWorkout(null);
       setEditSelectedClients([]);
       reset();
     } catch (error) {
       console.error('Ошибка:', error);
-      alert('Произошла ошибка при сохранении тренировки!');
+      alert(`Ошибка при сохранении тренировки: ${(error as Error).message}`);
     }
   };
 
@@ -278,19 +190,23 @@ const WorkoutsList = () => {
   const handleDelete = async (workoutId: number) => {
     if (!confirm('Вы уверены, что хотите удалить эту тренировку?')) return;
 
-    const { error: deleteError } = await supabase
-      .from('workouts')
-      .delete()
-      .eq('id', workoutId);
+    try {
+      const response = await fetch(`/api/workout/${workoutId}`, {
+        method: 'DELETE',
+      });
 
-    if (deleteError) {
-      console.error('Ошибка удаления тренировки:', deleteError);
-      alert('Ошибка при удалении тренировки!');
-      return;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при удалении тренировки');
+      }
+
+      setWorkouts(workouts.filter((workout) => workout.id !== workoutId));
+      alert('Тренировка успешно удалена!');
+    } catch (error) {
+      console.error('Ошибка:', error);
+      alert(`Ошибка при удалении тренировки: ${(error as Error).message}`);
     }
-
-    setWorkouts(workouts.filter((workout) => workout.id !== workoutId));
-    alert('Тренировка успешно удалена!');
   };
 
   return (
@@ -299,6 +215,7 @@ const WorkoutsList = () => {
       <Wrapper>
         <BackLink href="/pages/mainPage">На главную</BackLink>
         <Title>Список тренировок</Title>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <WorkoutsContainer>
           <DateFilterInput
             type="date"
@@ -310,15 +227,15 @@ const WorkoutsList = () => {
               <WorkoutCard key={workout.id}>
                 <WorkoutTitle>{workout.workout_name}</WorkoutTitle>
                 <WorkoutInfo>
-                Дата и время: {new Date(workout.workout_datetime).toLocaleString('ru-RU', {
-                  timeZone: 'UTC',
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </WorkoutInfo>
+                  Дата и время: {new Date(workout.workout_datetime).toLocaleString('ru-RU', {
+                    timeZone: 'UTC',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </WorkoutInfo>
                 <WorkoutInfo>Тренер: {workout.trainers.trainer_name}</WorkoutInfo>
                 <WorkoutInfo>Участники:</WorkoutInfo>
                 <ClientList>

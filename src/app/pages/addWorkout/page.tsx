@@ -53,7 +53,7 @@ const AddWorkout = () => {
   useEffect(() => {
     const fetchTrainersAndClients = async () => {
       try {
-        const response = await fetch('/api/trainersAndClients');
+        const response = await fetch('/api/trainers-and-clients');
         const data = await response.json();
 
         if (!response.ok) {
@@ -93,7 +93,7 @@ const AddWorkout = () => {
 
   const onSubmit = async (data: WorkoutFormData) => {
     try {
-      const response = await fetch('/api/workouts', {
+      const response = await fetch('/api/workout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

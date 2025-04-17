@@ -1,27 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { PostgrestError } from '@supabase/supabase-js';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Header from '@/app/components/header/Header';
-import { supabase } from '../../lib/supabaseClient';
-import {
-  ClientList,
-  ClientItem,
-  ClientInfo,
-  ClientText,
-  LoadingText,
-  ErrorText,
-  Button,
-  DeleteButton,
-  EditForm,
-  EditInput,
-  EditSelect,
-  ButtonGroup,
-  Buttons,
-} from './ClientsListStyles';
+import {ClientList,ClientItem,ClientInfo,ClientText,LoadingText,ErrorText,Button,DeleteButton,EditForm,EditInput,EditSelect,ButtonGroup,Buttons,} from './ClientsListStyles';
 import { Wrapper } from '@/app/GlobalStyles';
 import { Title } from '../mainPage/MainStyles';
-import Link from 'next/link';
 import { BackLink } from '../addClient/styles';
 
 type Client = {
@@ -64,18 +47,16 @@ const ClientsPage = () => {
     const fetchClients = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('clients')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const response = await fetch('/api/clients');
+        const data = await response.json();
 
-        if (error) {
-          throw error;
+        if (!response.ok) {
+          throw new Error(data.error || 'Ошибка при загрузке клиентов');
         }
 
-        setClients(data as Client[]);
+        setClients(data);
       } catch (error) {
-        setError(`Ошибка при загрузке клиентов: ${(error as PostgrestError).message}`);
+        setError(`Ошибка при загрузке клиентов: ${(error as Error).message}`);
       } finally {
         setLoading(false);
       }
@@ -102,18 +83,18 @@ const ClientsPage = () => {
     }
 
     try {
-      const { error } = await supabase
-        .from('clients')
-        .update({
-          name: data.name,
-          sex: data.sex,
-          age: age,
-          subscription: data.subscription,
-        })
-        .eq('id', editingClientId);
+      const response = await fetch(`/api/clients/${editingClientId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...data, age }),
+      });
 
-      if (error) {
-        throw error;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при обновлении клиента');
       }
 
       setClients((prev) =>
@@ -124,7 +105,7 @@ const ClientsPage = () => {
       setEditingClientId(null);
       reset();
     } catch (error) {
-      setError(`Ошибка при обновлении клиента: ${(error as PostgrestError).message}`);
+      setError(`Ошибка при обновлении клиента: ${(error as Error).message}`);
     }
   };
 
@@ -137,18 +118,19 @@ const ClientsPage = () => {
     if (!confirm('Вы уверены, что хотите удалить этого клиента?')) return;
 
     try {
-      const { error } = await supabase
-        .from('clients')
-        .delete()
-        .eq('id', id);
+      const response = await fetch(`/api/clients/${id}`, {
+        method: 'DELETE',
+      });
 
-      if (error) {
-        throw error;
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка при удалении клиента');
       }
 
       setClients((prev) => prev.filter((client) => client.id !== id));
     } catch (error) {
-      setError(`Ошибка при удалении клиента: ${(error as PostgrestError).message}`);
+      setError(`Ошибка при удалении клиента: ${(error as Error).message}`);
     }
   };
 

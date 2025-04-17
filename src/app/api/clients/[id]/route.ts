@@ -1,28 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from '../../../lib/supabaseClient';
 
-export async function GET() {
+export async function PUT(request: NextRequest, context: any) {
   try {
-    const { data, error } = await supabase
-      .from('clients')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: `Ошибка при загрузке клиентов: ${(error as Error).message}` },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
+    const { id } = context.params;
     const body = await request.json();
     const { name, sex, age, subscription } = body;
 
@@ -43,19 +24,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Недопустимое значение для абонемента' }, { status: 400 });
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('clients')
-      .insert([{ name, sex, age: parsedAge, subscription }])
-      .select();
+      .update({ name, sex, age: parsedAge, subscription })
+      .eq('id', id);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: 'Клиент успешно добавлен', client: data[0] }, { status: 201 });
+    return NextResponse.json({ message: 'Клиент успешно обновлен' }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: `Ошибка при добавлении клиента: ${(error as Error).message}` },
+      { error: `Ошибка при обновлении клиента: ${(error as Error).message}` },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest, context: any) {
+  try {
+    const { id } = context.params;
+
+    const { error } = await supabase
+      .from('clients')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ message: 'Клиент успешно удален' }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: `Ошибка при удалении клиента: ${(error as Error).message}` },
       { status: 500 }
     );
   }

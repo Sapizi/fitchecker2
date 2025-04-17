@@ -1,12 +1,37 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabase } from '../../lib/supabaseClient';
 
+export async function GET() {
+  try {
+    const { data: workoutsData, error: workoutsError } = await supabase
+      .from('workouts')
+      .select(`
+        id,
+        workout_name,
+        workout_datetime,
+        trainer_id,
+        trainers:trainer_id (trainer_name),
+        workout_clients (client_id, clients:client_id (name))
+      `);
+
+    if (workoutsError) {
+      return NextResponse.json({ error: workoutsError.message }, { status: 500 });
+    }
+
+    return NextResponse.json(workoutsData || [], { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: `Ошибка при загрузке тренировок: ${(error as Error).message}` },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { workoutName, workoutDateTime, trainerId, clients } = body;
 
-    // Валидация входных данных
     if (!workoutName || !workoutDateTime || !trainerId) {
       return NextResponse.json({ error: 'Название, дата и тренер обязательны' }, { status: 400 });
     }
@@ -19,7 +44,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Можно выбрать не более 30 клиентов' }, { status: 400 });
     }
 
-    // Вставка тренировки
     const { data: workoutData, error: workoutError } = await supabase
       .from('workouts')
       .insert({
@@ -34,7 +58,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: workoutError.message }, { status: 500 });
     }
 
-    // Вставка клиентов, если они есть
     if (clients && clients.length > 0 && workoutData) {
       const workoutClients = clients.map((clientId: number) => ({
         workout_id: workoutData.id,
