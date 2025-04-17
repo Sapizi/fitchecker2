@@ -6,6 +6,7 @@ import {
   ErrorMessage, FormField, FormWrapper, Input, Label, Select, SubmitButton, SuccessMessage, Form, BackLink} from './styles';
 import { Title } from '../mainPage/MainStyles';
 import { Wrapper } from '@/app/GlobalStyles';
+import { withAuth } from '@/app/withAuth';
 type FormData = {
   name: string;
   sex: 'male' | 'female';
@@ -135,4 +136,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default withAuth(Page, true);

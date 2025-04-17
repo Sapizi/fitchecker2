@@ -54,7 +54,7 @@ const AddAdmin = () => {
         <BackLink href={'/pages/mainPage'}>На главную</BackLink>
         <Title>Добавление администратора</Title>
         <FormContainer>
-          <Forma onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: 300 }}>
+          <Forma onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column'}}>
             <Label>Имя пользователя</Label>
             <MainInput
               type="text"
@@ -80,4 +80,4 @@ const AddAdmin = () => {
   )
 }
 
-export default withAuth(AddAdmin)
+export default withAuth(AddAdmin, true)

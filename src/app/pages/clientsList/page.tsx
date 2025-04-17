@@ -6,6 +6,7 @@ import {ClientList,ClientItem,ClientInfo,ClientText,LoadingText,ErrorText,Button
 import { Wrapper } from '@/app/GlobalStyles';
 import { Title } from '../mainPage/MainStyles';
 import { BackLink } from '../addClient/styles';
+import { withAuth } from '@/app/withAuth';
 
 type Client = {
   id: number;
@@ -230,4 +231,4 @@ const ClientsPage = () => {
   );
 };
 
-export default ClientsPage;
+export default withAuth(ClientsPage, true);

@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {ButtonContainer,CancelButton,ClientCheckbox,ClientItem,ClientLabel,ClientList,ClientListModal,DateFilterInput,DeleteButton,EditButton,Modal,ModalButtonContainer,ModalContent,ModalInput,ModalSelect,ModalTitle,SaveButton,WorkoutCard,WorkoutInfo,WorkoutsContainer,WorkoutTitle,} from './styles';
 import { BackLink } from '../addClient/styles';
+import { withAuth } from '@/app/withAuth';
 
 interface Trainer {
   id: number;
@@ -318,4 +319,4 @@ const WorkoutsList = () => {
   );
 };
 
-export default WorkoutsList;
+export default withAuth(WorkoutsList, true);

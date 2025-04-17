@@ -8,6 +8,7 @@ import { Title } from '../mainPage/MainStyles';
 import { Wrapper } from '@/app/GlobalStyles';
 import { useEffect, useState } from 'react';
 import { BackLink } from '../addClient/styles';
+import { withAuth } from '@/app/withAuth';
 
 const workoutSchema = z.object({
   workoutName: z.string().min(1, 'Название обязательно'),
@@ -192,4 +193,4 @@ const AddWorkout = () => {
   );
 };
 
-export default AddWorkout;
+export default withAuth(AddWorkout, true);

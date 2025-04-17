@@ -10,7 +10,6 @@ export const Form = styled.form`
     border-radius: 8px;
     border: 1px solid black;
     box-sizing: border-box;
-
     @media (max-width: 600px) {
         padding: 20px; 
         gap: 15px; 
