@@ -4,15 +4,19 @@ export const MainContent = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  @media (max-width: 768px){
+
+  @media (max-width: 894px) {
     flex-direction: column;
-    align-items: center;
-    margin-left: 60px;
+    align-items: center; /* Центрируем дочерние элементы */
+    margin-left: 0; /* Убираем смещение */
+    padding: 0 10px; /* Добавляем симметричные отступы для визуального баланса */
   }
-  @media (max-width: 425px){
+
+  @media (max-width: 425px) {
     flex-direction: column;
     align-items: center;
-    margin-left: 40px;
+    margin-left: 0; /* Убираем смещение */
+    padding: 0 5px;
   }
 `;
 
