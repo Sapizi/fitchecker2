@@ -4,27 +4,30 @@ export const AllMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh; 
-  padding: 20px; 
+  min-height: 100vh; /* Используем min-height вместо height для учета Header */
+  padding: 20px;
   box-sizing: border-box;
-`;
 
-export  const Forma = styled.form`
+  @media (max-width: 600px) {
+    padding: 10px; /* Уменьшаем padding на малых экранах */
+  }
+`;
+export const Forma = styled.form`
   width: 90%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 150px;
-  padding: 30px; 
+  padding: 30px;
   background-color: #f7f7f7;
   border-radius: 8px;
   border: 1px solid black;
   box-sizing: border-box;
 
   @media (max-width: 600px) {
-    padding: 20px; 
-    gap: 15px; 
+    padding: 20px;
+    gap: 15px;
+    margin-top: 0; /* Убираем margin-top на малых экранах */
   }
 `;
 
