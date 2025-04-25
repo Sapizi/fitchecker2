@@ -42,17 +42,25 @@ export default function AdminLogin() {
         },
         body: JSON.stringify(data),
       });
-
+  
       const result = await response.json();
-
+  
       if (!response.ok) {
         setLoginError(result.error || 'Произошла ошибка при входе');
         return;
       }
-
+  
       setLoginError('');
-      localStorage.setItem('isAdminLoggedIn', 'true');
-      router.push('/pages/mainPage');
+  
+      if (result.role === 'admin') {
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        router.push('/pages/mainPage');
+      } else if (result.role === 'client') {
+        localStorage.setItem('isClientLoggedIn', 'true');
+        router.push('/pages/userPage');
+      } else {
+        setLoginError('Неизвестная роль пользователя');
+      }
     } catch (err) {
       setLoginError('Произошла ошибка при входе');
       console.error(err);

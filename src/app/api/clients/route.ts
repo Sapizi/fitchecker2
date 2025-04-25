@@ -1,8 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabase } from '../../lib/supabaseClient';
 import nodemailer from 'nodemailer';
-import { randomBytes } from 'crypto';
-import { sendClientWelcomeEmail } from '../../lib/mailer';
+import bcrypt from 'bcryptjs';
 function generatePassword(length = 6) {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
@@ -81,19 +80,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Недопустимое значение для абонемента' }, { status: 400 });
     }
 
-    const password = generatePassword();
+    const plainPassword = generatePassword();
 
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
     const { data, error } = await supabase
       .from('clients')
-      .insert([{ name, sex, age: parsedAge, subscription, email, password }])
+      .insert([{ name, sex, age: parsedAge, subscription, email, password: hashedPassword }])
       .select();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Отправка письма
-    await sendClientEmail(email, name, password);
+    await sendClientEmail(email, name, plainPassword);
 
     return NextResponse.json({ message: 'Клиент успешно добавлен', client: data[0] }, { status: 201 });
   } catch (error) {
