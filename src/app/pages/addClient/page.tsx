@@ -12,6 +12,7 @@ type FormData = {
   sex: 'male' | 'female';
   age: string;
   subscription: 'monthly' | 'quarterly' | 'yearly';
+  email: string;
 };
 const Page = () => {
   const {
@@ -81,7 +82,23 @@ const Page = () => {
               />
               {errors.name && <ErrorMessage role="alert">{errors.name.message}</ErrorMessage>}
             </FormField>
-
+            <FormField>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                {...register('email', {
+                  required: 'Поле обязательно для заполнения',
+                  pattern: {
+                    value: /^[^@]+@[^@]+\.[^@]+$/,
+                    message: 'Введите корректный email'
+                  }
+                })}
+                placeholder="Введите email"
+                aria-invalid={errors.email ? "true" : "false"}
+              />
+              {errors.email && <ErrorMessage role="alert">{errors.email.message}</ErrorMessage>}
+            </FormField>
             <FormField>
               <Label htmlFor="sex">Пол</Label>
               <Select 
