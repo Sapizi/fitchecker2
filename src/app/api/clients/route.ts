@@ -80,12 +80,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Недопустимое значение для абонемента' }, { status: 400 });
     }
 
+
     const plainPassword = generatePassword();
 
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const currentDate = new Date();
+    let endDate;
+
+    switch (subscription) {
+      case 'monthly':
+        endDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+        break;
+      case 'quarterly':
+        endDate = new Date(currentDate.setMonth(currentDate.getMonth() + 3));
+        break;
+      case 'yearly':
+        endDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
+        break;
+      default:
+        return NextResponse.json({ error: 'Неизвестный тип абонемента' }, { status: 400 });
+    }
+
+    const formattedEndDate = endDate.toISOString();
+
+ 
     const { data, error } = await supabase
       .from('clients')
-      .insert([{ name, sex, age: parsedAge, subscription, email, password: hashedPassword }])
+      .insert([
+        {
+          name,
+          sex,
+          age: parsedAge,
+          subscription,
+          email,
+          password: hashedPassword,
+          end_date: formattedEndDate, 
+        },
+      ])
       .select();
 
     if (error) {

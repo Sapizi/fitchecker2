@@ -1,13 +1,18 @@
 'use client'
 
 import Header from "@/app/components/header/Header"
+import { Wrapper } from "@/app/GlobalStyles"
 import { withAuth } from "@/app/withAuth"
+import { Title } from "../mainPage/MainStyles"
 
 const Page = () => {
     return (
         <>
         <Header/>
-            asdfasfdsdfsfsfdsfds
+        <Wrapper>
+            <Title>Главная</Title>
+            
+        </Wrapper>
         </>
     )
 }

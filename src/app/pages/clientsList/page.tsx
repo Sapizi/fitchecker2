@@ -11,6 +11,7 @@ import { withAuth } from '@/app/withAuth';
 type Client = {
   id: number;
   created_at: string;
+  end_date: string;
   name: string;
   sex: string;
   age: number;
@@ -211,6 +212,10 @@ const ClientsPage = () => {
                         <ClientText>
                           <strong>Дата добавления:</strong>{' '}
                           {new Date(client.created_at).toLocaleString('ru-RU')}
+                        </ClientText>
+                        <ClientText>
+                          <strong>Дата окончания абонемента:</strong>
+                          {new Date(client.end_date).toLocaleString('ru-RU')}
                         </ClientText>
                       </ClientInfo>
                       <Buttons>
