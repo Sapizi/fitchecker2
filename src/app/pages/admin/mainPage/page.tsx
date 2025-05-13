@@ -91,7 +91,7 @@ const Main = () => {
               <BigText>{clientCount ?? 0}</BigText>
             )}
             <CardText>Количество клиентов</CardText>
-            <CardButton href="/pages/addClient">Добавить</CardButton>
+            <CardButton href="/pages/admin/addClient">Добавить</CardButton>
           </MainBlock>
 
           <DateTimeBlock>
@@ -112,13 +112,13 @@ const Main = () => {
                 </DateTimeText>
               ))
             )}
-            <AddAdminLink href={'/pages/addAdmin'}>Добавить администратора</AddAdminLink>
+            <AddAdminLink href={'/pages/admin/addAdmin'}>Добавить администратора</AddAdminLink>
           </DateTimeBlock>
 
           <ButtonsBlock>
-            <LinkButton href='/pages/addWorkout'>Добавить тренировку</LinkButton>
-            <LinkButton href='/pages/clientsList'>Список клиентов</LinkButton>
-            <LinkButton href='/pages/workoutList'>Список тренировок</LinkButton>
+            <LinkButton href='/pages/admin/addWorkout'>Добавить тренировку</LinkButton>
+            <LinkButton href='/pages/admin/clientsList'>Список клиентов</LinkButton>
+            <LinkButton href='/pages/admin/workoutList'>Список тренировок</LinkButton>
           </ButtonsBlock>
         </MainContent>
       </Wrapper>

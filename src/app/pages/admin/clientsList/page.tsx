@@ -140,7 +140,7 @@ const ClientsPage = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href="/pages/mainPage">На главную</BackLink>
+        <BackLink href="/pages/admin/mainPage">На главную</BackLink>
         <Title>Список клиентов</Title>
 
         {loading && <LoadingText>Загрузка...</LoadingText>}

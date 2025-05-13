@@ -5,7 +5,7 @@ import Header from "@/app/components/header/Header"
 import { Wrapper } from "@/app/GlobalStyles"
 import { Title } from "../mainPage/MainStyles"
 import { withAuth } from "@/app/withAuth"
-import { supabase } from "../../lib/supabaseClient"
+import { supabase } from "../../../lib/supabaseClient"
 import bcrypt from "bcryptjs"
 import { Form } from "react-hook-form"
 import { Forma, MainButton, MainInput } from "@/app/components/authform/AuthFormStyles"
@@ -52,7 +52,7 @@ const AddAdmin = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href={'/pages/mainPage'}>На главную</BackLink>
+        <BackLink href={'/pages/admin/mainPage'}>На главную</BackLink>
         <Title>Добавление администратора</Title>
         <FormContainer>
           <Container>

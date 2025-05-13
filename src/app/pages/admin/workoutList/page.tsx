@@ -213,7 +213,7 @@ const WorkoutsList = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href="/pages/mainPage">На главную</BackLink>
+        <BackLink href="/pages/admin/mainPage">На главную</BackLink>
         <Title>Список тренировок</Title>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <WorkoutsContainer>

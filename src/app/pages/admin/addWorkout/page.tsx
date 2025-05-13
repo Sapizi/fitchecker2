@@ -122,7 +122,7 @@ const AddWorkout = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href='/pages/mainPage'>На главную</BackLink>
+        <BackLink href='/pages/admin/mainPage'>На главную</BackLink>
         <Title>Добавить тренировку</Title>
         
         <FormContainer>

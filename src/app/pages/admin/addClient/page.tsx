@@ -67,7 +67,7 @@ const Page = () => {
     <>
       <Header />
       <Wrapper>
-        <BackLink href='/pages/mainPage'>Назад</BackLink>
+        <BackLink href='/pages/admin/mainPage'>Назад</BackLink>
         <Title>Добавить клиента</Title>
         <FormWrapper>
           <Form onSubmit={handleSubmit(onSubmit)}>

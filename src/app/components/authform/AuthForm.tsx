@@ -25,9 +25,9 @@ export default function AdminLogin() {
       const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
       const isClientLoggedIn = localStorage.getItem('isClientLoggedIn') === 'true';
       if (isAdminLoggedIn) {
-        router.push('/pages/mainPage');
+        router.push('/pages/admin/mainPage');
       } else if (isClientLoggedIn) {
-        router.push('/pages/userPage');
+        router.push('/pages/user/userPage');
       }
     };
     checkAuth();
@@ -54,10 +54,10 @@ export default function AdminLogin() {
   
       if (result.role === 'admin') {
         localStorage.setItem('isAdminLoggedIn', 'true');
-        router.push('/pages/mainPage');
+        router.push('/pages/admin/mainPage');
       } else if (result.role === 'client') {
         localStorage.setItem('isClientLoggedIn', 'true');
-        router.push('/pages/userPage');
+        router.push('/pages/user/userPage');
       } else {
         setLoginError('Неизвестная роль пользователя');
       }

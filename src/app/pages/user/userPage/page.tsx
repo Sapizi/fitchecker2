@@ -3,7 +3,7 @@
 import Header from "@/app/components/header/Header"
 import { Wrapper } from "@/app/GlobalStyles"
 import { withAuth } from "@/app/withAuth"
-import { Title } from "../mainPage/MainStyles"
+import { Title } from "../../admin/mainPage/MainStyles"
 
 const Page = () => {
     return (
