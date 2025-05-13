@@ -37,22 +37,27 @@ const Main = () => {
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      const date = now.toLocaleDateString('ru-RU', {
-        timeZone: 'UTC',
+      const utcPlus5 = new Date(now.getTime() + 0 * 60 * 60 * 1000);
+  
+      const date = utcPlus5.toLocaleDateString('ru-RU', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
       }).replace(/\./g, '/');
-      const time = now.toLocaleTimeString('ru-RU', {
-        timeZone: 'UTC',
+  
+      const time = utcPlus5.toLocaleTimeString('ru-RU', {
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: false,
       });
+  
       setCurrentDateTime({ date, time });
     };
+  
     updateDateTime();
     const interval = setInterval(updateDateTime, 1000);
+  
     return () => clearInterval(interval);
   }, []);
 
