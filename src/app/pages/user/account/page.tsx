@@ -1,8 +1,9 @@
+'use client'
 import Header from "@/app/components/header/Header"
 import { Title } from "../../admin/mainPage/MainStyles"
 import { withAuth } from "@/app/withAuth"
 
-const Page = () => {
+const AccountPage = () => {
     return(
         <>
             <Header/>
@@ -10,4 +11,4 @@ const Page = () => {
         </>
     )
 }
-export default withAuth(Page)
+export default withAuth(AccountPage)

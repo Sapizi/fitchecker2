@@ -4,9 +4,14 @@ import { Wrapper } from "@/app/GlobalStyles"
 import { withAuth } from "@/app/withAuth"
 import { Title } from "../../admin/mainPage/MainStyles"
 import { UserText } from "./styles"
-
-const Page = () => {
-  const clientName = localStorage.getItem('clientName') || 'Гость';
+import React from "react"
+const UserPage = () => {
+    const [clientName] = React.useState(() => {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem('clientName') || 'Гость'
+        }
+        return 'Гость'
+      })
 
   return (
     <>
@@ -19,4 +24,4 @@ const Page = () => {
   )
 }
 
-export default withAuth(Page)
+export default withAuth(UserPage)
