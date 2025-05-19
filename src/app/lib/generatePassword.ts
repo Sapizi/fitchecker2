@@ -6,4 +6,4 @@ export function generatePassword(length: number = 6): string {
     }
     return password;
   }
-  
+  //©sapizi

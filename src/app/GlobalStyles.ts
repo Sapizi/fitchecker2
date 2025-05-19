@@ -26,3 +26,4 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Comfortaa', sans-serif;
   }
 `;
+//©sapizi

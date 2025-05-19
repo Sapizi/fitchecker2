@@ -27,3 +27,4 @@ export const withAuth = (WrappedComponent: React.ComponentType, isAdminRoute = f
     return <WrappedComponent {...props} />;
   };
 };
+//©sapizi

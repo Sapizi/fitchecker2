@@ -194,3 +194,4 @@ const AddWorkout = () => {
 };
 
 export default withAuth(AddWorkout, true);
+//©sapizi
