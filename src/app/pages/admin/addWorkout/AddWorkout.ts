@@ -24,7 +24,6 @@ export const AddForm = styled.form`
   flex-direction: column;
   gap: 10px;
   box-sizing: border-box;
-
   @media (max-width: 768px) {
     margin: 20px auto;
     padding: 15px;

@@ -127,8 +127,7 @@ const AddWorkout = () => {
         
         <FormContainer>
           <AddForm onSubmit={handleSubmit(onSubmit)}>
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-            {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
+            
 
             <AddInput
               type='text'
@@ -182,7 +181,8 @@ const AddWorkout = () => {
                 <p>Клиенты не найдены</p>
               )}
             </ClientList>
-
+            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+            {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
             <AddButton type='submit' disabled={isSubmitting}>
               {isSubmitting ? 'Добавление...' : 'Добавить тренировку'}
             </AddButton>

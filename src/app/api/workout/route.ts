@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { supabase } from '../../lib/supabaseClient';
+import nodemailer from 'nodemailer';
 
 export async function GET() {
   try {
@@ -26,6 +27,47 @@ export async function GET() {
     );
   }
 }
+async function sendWorkoutNotificationEmail(
+  email: string,
+  clientName: string,
+  workoutName: string,
+  trainerName: string,
+  workoutDateTime: string
+) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const formattedDate = new Date(workoutDateTime).toLocaleString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Вы добавлены на тренировку',
+    text: `
+Здравствуйте, ${clientName}!
+
+Вас добавили на тренировку: "${workoutName}".
+Тренер: ${trainerName}.
+Дата и время: ${formattedDate}.
+
+С уважением,
+Команда FitChecker
+    `.trim(),
+  };
+
+  await transporter.sendMail(mailOptions);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,7 +91,7 @@ export async function POST(request: NextRequest) {
       .insert({
         workout_name: workoutName,
         workout_datetime: workoutDateTime,
-        trainer_id: trainerId
+        trainer_id: trainerId,
       })
       .select()
       .single();
@@ -58,10 +100,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: workoutError.message }, { status: 500 });
     }
 
+
     if (clients && clients.length > 0 && workoutData) {
       const workoutClients = clients.map((clientId: number) => ({
         workout_id: workoutData.id,
-        client_id: clientId
+        client_id: clientId,
       }));
 
       const { error: clientsError } = await supabase
@@ -71,6 +114,36 @@ export async function POST(request: NextRequest) {
       if (clientsError) {
         return NextResponse.json({ error: clientsError.message }, { status: 500 });
       }
+    }
+
+
+    const { data: trainerData, error: trainerError } = await supabase
+      .from('trainers')
+      .select('trainer_name')
+      .eq('id', trainerId)
+      .single();
+
+    if (trainerError) {
+      return NextResponse.json({ error: trainerError.message }, { status: 500 });
+    }
+
+    const { data: clientsData, error: clientsError } = await supabase
+      .from('clients')
+      .select('id, name, email')
+      .in('id', clients);
+
+    if (clientsError) {
+      return NextResponse.json({ error: clientsError.message }, { status: 500 });
+    }
+
+    for (const client of clientsData) {
+      await sendWorkoutNotificationEmail(
+        client.email,
+        client.name,
+        workoutName,
+        trainerData.trainer_name,
+        workoutDateTime
+      );
     }
 
     return NextResponse.json({ message: 'Тренировка успешно добавлена', workout: workoutData }, { status: 201 });
