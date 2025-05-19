@@ -29,7 +29,9 @@ export const HeaderLogo = styled.h1`
 `
 export const LogoutButton = styled.button`
     background-color: #e97c00;
-    padding-right: 62px;
+    margin-right: 64px;
+    height: 40px;
+    width: 100px;
     color: white;
     border: none;
     border-radius: 4px;
