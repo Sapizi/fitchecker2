@@ -2,6 +2,8 @@ import { NextResponse, NextRequest } from 'next/server';
 import { supabase } from '../../lib/supabaseClient';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
+import QRCode from 'qrcode';
+
 function generatePassword(length = 6) {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
@@ -38,7 +40,7 @@ async function sendClientEmail(email: string, name: string, password: string) {
   await transporter.sendMail(mailOptions);
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('clients')
@@ -80,9 +82,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Недопустимое значение для абонемента' }, { status: 400 });
     }
 
-
     const plainPassword = generatePassword();
-
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     const currentDate = new Date();
@@ -104,7 +104,6 @@ export async function POST(request: NextRequest) {
 
     const formattedEndDate = endDate.toISOString();
 
- 
     const { data, error } = await supabase
       .from('clients')
       .insert([
@@ -115,7 +114,7 @@ export async function POST(request: NextRequest) {
           subscription,
           email,
           password: hashedPassword,
-          end_date: formattedEndDate, 
+          end_date: formattedEndDate,
         },
       ])
       .select();
@@ -124,9 +123,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    const client = data[0];
+    const clientId = client.id;
+
+    const qrText = `Клиент: ${name}\nАбонемент: ${subscription}\nДата окончания: ${formattedEndDate}`;
+
+    const qrBuffer = await QRCode.toBuffer(qrText, { width: 300 });
+
+    const fileName = `qr-codes/client-${clientId}.png`;
+    const { error: uploadError } = await supabase.storage
+      .from('client-qr-codes')
+      .upload(fileName, qrBuffer, {
+        contentType: 'image/png',
+      });
+
+    if (uploadError) {
+      return NextResponse.json({ error: `Ошибка загрузки QR-кода: ${uploadError.message}` }, { status: 500 });
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('client-qr-codes')
+      .getPublicUrl(fileName);
+
+    const qrCodeUrl = publicUrlData.publicUrl;
+    const { error: updateError } = await supabase
+      .from('clients')
+      .update({ qr_code_url: qrCodeUrl })
+      .eq('id', clientId);
+
+    if (updateError) {
+      return NextResponse.json({ error: `Ошибка обновления QR-кода: ${updateError.message}` }, { status: 500 });
+    }
+
     await sendClientEmail(email, name, plainPassword);
 
-    return NextResponse.json({ message: 'Клиент успешно добавлен', client: data[0] }, { status: 201 });
+    return NextResponse.json({ message: 'Клиент успешно добавлен', client: { ...client, qr_code_url: qrCodeUrl } }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: `Ошибка при добавлении клиента: ${(error as Error).message}` },
@@ -134,4 +165,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-//©sapizi
