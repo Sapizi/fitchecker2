@@ -124,6 +124,7 @@ const Main = () => {
             <LinkButton href='/pages/admin/addWorkout'>Добавить тренировку</LinkButton>
             <LinkButton href='/pages/admin/clientsList'>Список клиентов</LinkButton>
             <LinkButton href='/pages/admin/workoutList'>Список тренировок</LinkButton>
+            <LinkButton href='/pages/admin/scan'>Скан</LinkButton>
           </ButtonsBlock>
         </MainContent>
       </Wrapper>
