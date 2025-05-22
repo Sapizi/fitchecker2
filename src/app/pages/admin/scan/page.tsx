@@ -38,7 +38,7 @@ const QRScan = () => {
     const startScanning = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' }, // Prefer rear camera
+          video: { facingMode: 'environment' }, 
         });
         streamRef.current = stream;
         if (videoRef.current) {

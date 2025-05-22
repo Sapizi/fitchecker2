@@ -56,9 +56,8 @@ export default function AdminLogin() {
         localStorage.setItem('isAdminLoggedIn', 'true');
         router.push('/pages/admin/mainPage');
       } else if (result.role === 'client') {
-        // Сохраняем имя пользователя в localStorage
         localStorage.setItem('isClientLoggedIn', 'true');
-        localStorage.setItem('clientName', data.username); // Предполагаем, что username содержит имя клиента
+        localStorage.setItem('clientName', data.username);
         router.push('/pages/user/userPage');
       } else {
         setLoginError('Неизвестная роль пользователя');

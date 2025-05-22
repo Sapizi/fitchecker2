@@ -13,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
+      <link rel="icon" href="/icon.svg" />
       <body>
         {children}
         <SpeedInsights />
